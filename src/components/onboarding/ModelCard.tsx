@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import {
   AudioLines,
   Check,
+  Cloud,
   Download,
   Globe,
   HardDrive,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import type { ModelInfo } from "@/bindings";
 import { formatModelSize } from "../../lib/utils/format";
+import { DEFAULT_CLOUD_MODEL, isCloudModel } from "../../lib/utils/cloudModel";
 import {
   getTranslatedModelDescription,
   getTranslatedModelName,
@@ -95,6 +97,10 @@ const ModelCard: React.FC<ModelCardProps> = ({
   const debugMode = useSettingsStore(
     (state) => state.settings?.debug_mode ?? false,
   );
+  const cloudModel = useSettingsStore(
+    (state) => state.settings?.cloud_transcription_model || DEFAULT_CLOUD_MODEL,
+  );
+  const isCloud = isCloudModel(model);
   const isFeatured = variant === "featured";
   // The active model is already loaded — re-selecting it just reloads it for no
   // gain, so it is deliberately not clickable.
@@ -104,7 +110,10 @@ const ModelCard: React.FC<ModelCardProps> = ({
   const displayName = getTranslatedModelName(model, t);
   const displayDescription = getTranslatedModelDescription(model, t);
   const showModelSize =
-    status === "downloadable" || status === "available" || status === "active";
+    !isCloud &&
+    (status === "downloadable" ||
+      status === "available" ||
+      status === "active");
   const formattedModelSize = formatModelSize(Number(model.size_mb));
   const quantLabel = getQuantLabel(model.filename);
   const capabilityLanguages = getUniqueCapabilityLanguages(
@@ -230,7 +239,9 @@ const ModelCard: React.FC<ModelCardProps> = ({
 
       {/* Bottom row: tags + action buttons (full width) */}
       <div className="flex items-center gap-3 w-full -mb-0.5 mt-0.5 h-5">
-        {capabilityLanguages.length > 0 && (
+        {/* Cloud cards share one language list, which would overstate some
+            OpenRouter models, so they don't show a count. */}
+        {capabilityLanguages.length > 0 && !isCloud && (
           <div
             className="flex items-center gap-1 text-xs text-text/50"
             title={
@@ -274,18 +285,26 @@ const ModelCard: React.FC<ModelCardProps> = ({
             )}
           </span>
         )}
-        {onDelete && (status === "available" || status === "active") && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleDelete}
-            title={t("modelSelector.deleteModel", { modelName: displayName })}
-            className="flex items-center gap-1.5 text-logo-primary/85 hover:text-logo-primary hover:bg-logo-primary/10"
-          >
-            <Trash2 className="w-3.5 h-3.5" />
-            <span>{t("common.delete")}</span>
-          </Button>
+        {isCloud && (
+          <span className="flex items-center gap-1.5 ms-auto min-w-0 text-xs text-text/50">
+            <Cloud className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">{model.filename || cloudModel}</span>
+          </span>
         )}
+        {onDelete &&
+          !isCloud &&
+          (status === "available" || status === "active") && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDelete}
+              title={t("modelSelector.deleteModel", { modelName: displayName })}
+              className="flex items-center gap-1.5 text-logo-primary/85 hover:text-logo-primary hover:bg-logo-primary/10"
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+              <span>{t("common.delete")}</span>
+            </Button>
+          )}
       </div>
 
       {/* Download/extract progress */}

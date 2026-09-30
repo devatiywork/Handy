@@ -22,6 +22,14 @@
     "subtitle": "시작하려면 음성 인식 모델을 선택하세요",
     "existingModelsTitle": "호환 가능한 모델",
     "downloadModelsTitle": "다운로드 가능",
+    "cloud": {
+      "title": "또는 클라우드에서 음성 인식",
+      "description": "아무것도 다운로드하지 않고 OpenRouter의 음성 인식 모델(기본값 openai/gpt-transcribe)을 사용하세요. 오디오는 OpenRouter로 전송되며 요금은 사용자 계정에 청구됩니다.",
+      "apiKeyPlaceholder": "OpenRouter API 키",
+      "use": "클라우드 사용",
+      "getKey": "API 키 받기",
+      "rejected": "OpenRouter가 이 키를 거부했습니다. 키를 확인하고 다시 시도하세요."
+    },
     "showAllModels": "전체 {{total}}개 모델 표시",
     "showFewerModels": "간략히 표시",
     "recommended": "추천",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "크고 느리지만 매우 정확한 다국어 모델."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "OpenRouter를 통해 클라우드에서 음성을 인식합니다. 다운로드할 필요는 없지만 오디오가 기기 밖으로 전송됩니다."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "사용자 정의",
+    "cloud": "클라우드",
     "streaming": "스트리밍",
     "active": "활성",
     "switching": "전환 중...",
@@ -256,6 +269,73 @@
       "rescan": {
         "label": "다시 스캔",
         "tooltip": "Handy 외부에서 모델 폴더 또는 Hugging Face 캐시에 추가된 모델을 다시 스캔합니다"
+      },
+      "cloud": {
+        "title": "클라우드 음성 인식",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "로컬 모델 대신 OpenRouter의 음성 인식 모델로 음성을 인식합니다. 오디오는 OpenRouter로 전송되며 요금은 사용자 계정에 청구됩니다.",
+        "status": {
+          "active": "활성",
+          "off": "꺼짐",
+          "noKey": "키 없음",
+          "rejected": "키 거부됨"
+        },
+        "apiKey": {
+          "title": "API 키",
+          "description": "이 기기에 저장됩니다. 후처리 제공자로 OpenRouter를 선택한 경우 후처리에도 사용됩니다.",
+          "placeholder": "sk-or-...",
+          "show": "키 표시",
+          "hide": "키 숨기기",
+          "checking": "키 확인 중…",
+          "valid": "키 “{{label}}”이(가) 유효합니다",
+          "validPlain": "키가 유효합니다",
+          "rejected": "OpenRouter가 이 키를 거부했습니다",
+          "checkFailed": "키를 확인하지 못했습니다: {{error}}",
+          "recheck": "다시 확인"
+        },
+        "getKey": "키 받기",
+        "balance": {
+          "title": "잔액",
+          "refresh": "잔액 새로고침",
+          "account": {
+            "title": "계정 잔액",
+            "summary": "충전 {{credits}} · 사용 {{spent}}",
+            "needsManagementKey": "OpenRouter는 관리 키(management key)에만 계정 잔액을 보여 줍니다.",
+            "addManagementKey": "관리 키 추가",
+            "managementKey": "관리 키",
+            "managementKeyHint": "잔액을 읽는 데만 사용됩니다. 관리 키는 API 키를 만들고 삭제할 수 있으므로 만료일을 설정하세요.",
+            "createManagementKey": "키 만들기",
+            "managementKeyRejected": "OpenRouter가 관리 키를 거부했습니다.",
+            "unavailable": "계정 잔액을 불러오지 못했습니다: {{error}}"
+          },
+          "key": {
+            "title": "이 키"
+          },
+          "remaining": "{{limit}} 중 <b>{{remaining}}</b> 남음",
+          "resets": {
+            "daily": "매일 초기화",
+            "weekly": "매주 초기화",
+            "monthly": "매월 초기화"
+          },
+          "noLimit": "이 키에는 지출 한도가 없습니다.",
+          "setLimit": "한도 설정",
+          "today": "오늘",
+          "week": "이번 주",
+          "month": "이번 달",
+          "total": "전체",
+          "freeTier": "무료 계정: 유료 모델을 사용하려면 OpenRouter에서 크레딧을 충전하세요.",
+          "addCredits": "크레딧 충전"
+        },
+        "pickModel": "아래에서 클라우드 모델을 선택하면 받아쓰기가 클라우드로 전환됩니다."
+      },
+      "cloudModels": {
+        "title": "클라우드 모델 · OpenRouter",
+        "refresh": "모델 목록 새로고침",
+        "keyRequired": "클라우드 음성 인식을 사용하려면 API 키를 추가하세요.",
+        "addKey": "키 추가",
+        "showAll": "모든 클라우드 모델 보기 ({{total}})",
+        "showFewer": "간단히 보기",
+        "fetchFailed": "모델 목록을 불러오지 못했습니다: {{error}}"
       }
     },
     "advanced": {

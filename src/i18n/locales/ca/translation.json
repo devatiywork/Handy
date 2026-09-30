@@ -22,6 +22,14 @@
     "subtitle": "Per començar, trieu un model de transcripció",
     "existingModelsTitle": "Models compatibles",
     "downloadModelsTitle": "Disponibles per baixar",
+    "cloud": {
+      "title": "O transcriviu al núvol",
+      "description": "Utilitzeu un model de reconeixement de veu d'OpenRouter (openai/gpt-transcribe per defecte) sense baixar res. L'àudio s'envia a OpenRouter i es factura al vostre compte.",
+      "apiKeyPlaceholder": "Clau de l'API d'OpenRouter",
+      "use": "Utilitza el núvol",
+      "getKey": "Obteniu una clau de l'API",
+      "rejected": "OpenRouter ha rebutjat aquesta clau. Comproveu-la i torneu-ho a provar."
+    },
     "showAllModels": "Mostra tots els {{total}} models",
     "showFewerModels": "Mostra menys models",
     "recommended": "Recomanat",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Un model multilingüe gran, més lent, però molt precís."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transcriu al núvol mitjançant OpenRouter. No cal baixar res, però l'àudio surt del vostre dispositiu."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Personalitzat",
+    "cloud": "Núvol",
     "legacy": "Antic",
     "streaming": "En temps real",
     "active": "Actiu",
@@ -227,7 +240,74 @@
         "label": "Torna a cercar",
         "tooltip": "Torna a cercar models afegits a la carpeta de models o a la memòria cau de Hugging Face des de fora del Handy"
       },
-      "noModelsMatch": "Cap model no coincideix amb aquest filtre."
+      "noModelsMatch": "Cap model no coincideix amb aquest filtre.",
+      "cloud": {
+        "title": "Transcripció al núvol",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transcriviu amb un model de reconeixement de veu d'OpenRouter en lloc d'un de local. L'àudio s'envia a OpenRouter i es factura al vostre compte.",
+        "status": {
+          "active": "Activa",
+          "off": "Desactivada",
+          "noKey": "Sense clau",
+          "rejected": "Clau rebutjada"
+        },
+        "apiKey": {
+          "title": "Clau de l'API",
+          "description": "Es desa en aquest dispositiu. El postprocessament també la fa servir quan OpenRouter n'és el proveïdor.",
+          "placeholder": "sk-or-...",
+          "show": "Mostra la clau",
+          "hide": "Amaga la clau",
+          "checking": "S'està comprovant la clau…",
+          "valid": "La clau «{{label}}» és vàlida",
+          "validPlain": "La clau és vàlida",
+          "rejected": "OpenRouter ha rebutjat aquesta clau",
+          "checkFailed": "No s'ha pogut comprovar la clau: {{error}}",
+          "recheck": "Torna-ho a comprovar"
+        },
+        "getKey": "Obteniu una clau",
+        "balance": {
+          "title": "Saldo",
+          "refresh": "Actualitza el saldo",
+          "account": {
+            "title": "Saldo del compte",
+            "summary": "{{credits}} recarregats · {{spent}} gastats",
+            "needsManagementKey": "OpenRouter només mostra el saldo del compte a una clau d'administració (management key).",
+            "addManagementKey": "Afegiu una clau d'administració",
+            "managementKey": "Clau d'administració",
+            "managementKeyHint": "Només s'utilitza per consultar el saldo. Una clau d'administració pot crear i eliminar claus de l'API, així que poseu-li una data de caducitat.",
+            "createManagementKey": "Creeu una clau",
+            "managementKeyRejected": "OpenRouter ha rebutjat la clau d'administració.",
+            "unavailable": "No s'ha pogut carregar el saldo del compte: {{error}}"
+          },
+          "key": {
+            "title": "Aquesta clau"
+          },
+          "remaining": "Queden <b>{{remaining}}</b> de {{limit}}",
+          "resets": {
+            "daily": "Es restableix cada dia",
+            "weekly": "Es restableix cada setmana",
+            "monthly": "Es restableix cada mes"
+          },
+          "noLimit": "Aquesta clau no té límit de despesa.",
+          "setLimit": "Establiu un límit",
+          "today": "Avui",
+          "week": "Setmana",
+          "month": "Mes",
+          "total": "Total",
+          "freeTier": "Compte gratuït: afegiu crèdits a OpenRouter per utilitzar els models de pagament.",
+          "addCredits": "Afegiu crèdits"
+        },
+        "pickModel": "Trieu un model al núvol a continuació per dictar al núvol."
+      },
+      "cloudModels": {
+        "title": "Models al núvol · OpenRouter",
+        "refresh": "Actualitzeu la llista de models",
+        "keyRequired": "Afegiu una clau de l'API per utilitzar la transcripció al núvol.",
+        "addKey": "Afegiu una clau",
+        "showAll": "Mostra tots els models al núvol ({{total}})",
+        "showFewer": "Mostra'n menys",
+        "fetchFailed": "No s'ha pogut carregar la llista de models: {{error}}"
+      }
     },
     "sound": {
       "title": "So",

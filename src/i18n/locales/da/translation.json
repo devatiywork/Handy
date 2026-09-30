@@ -22,6 +22,14 @@
     "subtitle": "For at komme i gang skal du vælge en transskriptionsmodel",
     "existingModelsTitle": "Kompatible modeller",
     "downloadModelsTitle": "Tilgængelig til download",
+    "cloud": {
+      "title": "Eller transskriber i skyen",
+      "description": "Brug en tale-til-tekst-model fra OpenRouter (som standard openai/gpt-transcribe) uden at downloade noget. Lyden sendes til OpenRouter og faktureres til din konto.",
+      "apiKeyPlaceholder": "OpenRouter API-nøgle",
+      "use": "Brug skyen",
+      "getKey": "Få en API-nøgle",
+      "rejected": "OpenRouter afviste denne nøgle. Kontrollér den, og prøv igen."
+    },
     "showAllModels": "Vis alle {{total}} modeller",
     "showFewerModels": "Vis færre modeller",
     "recommended": "Anbefalet",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "En stor, langsommere, men meget nøjagtig flersproget model."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transskriberer i skyen via OpenRouter. Intet at downloade, men lyden forlader din enhed."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Brugerdefineret",
+    "cloud": "Cloud",
     "legacy": "Forældet",
     "streaming": "Streaming",
     "active": "Aktiv",
@@ -227,7 +240,74 @@
         "label": "Søg igen",
         "tooltip": "Søg igen efter modeller, der er tilføjet til modelmappen eller Hugging Face-cachen uden for Handy"
       },
-      "noModelsMatch": "Ingen modeller matcher dette filter."
+      "noModelsMatch": "Ingen modeller matcher dette filter.",
+      "cloud": {
+        "title": "Transskription i skyen",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transskriber med en tale-til-tekst-model fra OpenRouter i stedet for en lokal model. Lyden sendes til OpenRouter og faktureres til din konto.",
+        "status": {
+          "active": "Aktiv",
+          "off": "Slået fra",
+          "noKey": "Ingen nøgle",
+          "rejected": "Nøgle afvist"
+        },
+        "apiKey": {
+          "title": "API-nøgle",
+          "description": "Gemmes på denne enhed. Efterbehandling bruger den også, når OpenRouter er valgt der.",
+          "placeholder": "sk-or-...",
+          "show": "Vis nøgle",
+          "hide": "Skjul nøgle",
+          "checking": "Kontrollerer nøgle…",
+          "valid": "Nøglen “{{label}}” er gyldig",
+          "validPlain": "Nøglen er gyldig",
+          "rejected": "OpenRouter afviste denne nøgle",
+          "checkFailed": "Nøglen kunne ikke kontrolleres: {{error}}",
+          "recheck": "Kontrollér igen"
+        },
+        "getKey": "Få en nøgle",
+        "balance": {
+          "title": "Saldo",
+          "refresh": "Opdater saldo",
+          "account": {
+            "title": "Kontosaldo",
+            "summary": "{{credits}} indsat · {{spent}} brugt",
+            "needsManagementKey": "OpenRouter viser kun kontosaldoen for en administrationsnøgle (management key).",
+            "addManagementKey": "Tilføj administrationsnøgle",
+            "managementKey": "Administrationsnøgle",
+            "managementKeyHint": "Bruges kun til at læse saldoen. En administrationsnøgle kan oprette og slette API-nøgler, så giv den en udløbsdato.",
+            "createManagementKey": "Opret en nøgle",
+            "managementKeyRejected": "OpenRouter afviste administrationsnøglen.",
+            "unavailable": "Kunne ikke hente kontosaldoen: {{error}}"
+          },
+          "key": {
+            "title": "Denne nøgle"
+          },
+          "remaining": "<b>{{remaining}}</b> tilbage af {{limit}}",
+          "resets": {
+            "daily": "Nulstilles dagligt",
+            "weekly": "Nulstilles ugentligt",
+            "monthly": "Nulstilles månedligt"
+          },
+          "noLimit": "Denne nøgle har ingen forbrugsgrænse.",
+          "setLimit": "Angiv en grænse",
+          "today": "I dag",
+          "week": "Uge",
+          "month": "Måned",
+          "total": "I alt",
+          "freeTier": "Gratis konto: Indsæt kredit hos OpenRouter for at bruge betalingsmodeller.",
+          "addCredits": "Indsæt kredit"
+        },
+        "pickModel": "Vælg en cloudmodel nedenfor for at diktere i skyen."
+      },
+      "cloudModels": {
+        "title": "Cloudmodeller · OpenRouter",
+        "refresh": "Opdater modellisten",
+        "keyRequired": "Tilføj en API-nøgle for at bruge transskription i skyen.",
+        "addKey": "Tilføj nøgle",
+        "showAll": "Vis alle cloudmodeller ({{total}})",
+        "showFewer": "Vis færre",
+        "fetchFailed": "Kunne ikke indlæse modellisten: {{error}}"
+      }
     },
     "sound": {
       "title": "Lyd",

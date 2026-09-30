@@ -22,6 +22,14 @@
     "subtitle": "للبدء، اختر نموذج التفريغ الصوتي",
     "existingModelsTitle": "النماذج المتوافقة",
     "downloadModelsTitle": "متاح للتنزيل",
+    "cloud": {
+      "title": "أو انسخ في السحابة",
+      "description": "استخدم نموذج تحويل الكلام إلى نص من OpenRouter (openai/gpt-transcribe افتراضيًا) دون تنزيل أي شيء. يُرسل الصوت إلى OpenRouter وتُحتسب التكلفة على حسابك.",
+      "apiKeyPlaceholder": "مفتاح API لـ OpenRouter",
+      "use": "استخدام السحابة",
+      "getKey": "احصل على مفتاح API",
+      "rejected": "رفض OpenRouter هذا المفتاح. تحقق منه وحاول مرة أخرى."
+    },
     "showAllModels": "عرض كل النماذج ({{total}})",
     "showFewerModels": "عرض عدد أقل من النماذج",
     "recommended": "موصى به",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "نموذج كبير وأبطأ، لكنه دقيق جداً ومتعدد اللغات."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "ينسخ الكلام في السحابة عبر OpenRouter. لا حاجة إلى التنزيل، لكن الصوت يغادر جهازك."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "مخصص",
+    "cloud": "سحابي",
     "streaming": "البث",
     "active": "نشط",
     "noModelsAvailable": "لا توجد نماذج متاحة",
@@ -635,6 +648,73 @@
       "rescan": {
         "label": "إعادة الفحص",
         "tooltip": "إعادة الفحص بحثًا عن النماذج المضافة إلى مجلد النماذج أو ذاكرة Hugging Face التخزينية المؤقتة خارج Handy"
+      },
+      "cloud": {
+        "title": "النسخ السحابي",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "انسخ باستخدام نموذج تحويل الكلام إلى نص من OpenRouter بدلًا من نموذج محلي. يُرسل الصوت إلى OpenRouter وتُحتسب التكلفة على حسابك.",
+        "status": {
+          "active": "مفعّل",
+          "off": "متوقف",
+          "noKey": "لا يوجد مفتاح",
+          "rejected": "المفتاح مرفوض"
+        },
+        "apiKey": {
+          "title": "مفتاح API",
+          "description": "يُخزَّن على هذا الجهاز. تستخدمه المعالجة اللاحقة أيضًا عندما يكون OpenRouter هو المزود فيها.",
+          "placeholder": "sk-or-...",
+          "show": "إظهار المفتاح",
+          "hide": "إخفاء المفتاح",
+          "checking": "جارٍ التحقق من المفتاح…",
+          "valid": "المفتاح «{{label}}» صالح",
+          "validPlain": "المفتاح صالح",
+          "rejected": "رفض OpenRouter هذا المفتاح",
+          "checkFailed": "تعذّر التحقق من المفتاح: {{error}}",
+          "recheck": "تحقق مرة أخرى"
+        },
+        "getKey": "احصل على مفتاح",
+        "balance": {
+          "title": "الرصيد",
+          "refresh": "تحديث الرصيد",
+          "account": {
+            "title": "رصيد الحساب",
+            "summary": "تمت إضافة {{credits}} · تم إنفاق {{spent}}",
+            "needsManagementKey": "لا يعرض OpenRouter رصيد الحساب إلا لمفتاح الإدارة (management key).",
+            "addManagementKey": "إضافة مفتاح إدارة",
+            "managementKey": "مفتاح الإدارة",
+            "managementKeyHint": "يُستخدم لقراءة الرصيد فقط. يستطيع مفتاح الإدارة إنشاء مفاتيح API وحذفها، لذا حدّد له تاريخ انتهاء.",
+            "createManagementKey": "إنشاء مفتاح",
+            "managementKeyRejected": "رفض OpenRouter مفتاح الإدارة.",
+            "unavailable": "تعذّر تحميل رصيد الحساب: {{error}}"
+          },
+          "key": {
+            "title": "هذا المفتاح"
+          },
+          "remaining": "متبقٍ <b>{{remaining}}</b> من {{limit}}",
+          "resets": {
+            "daily": "يُعاد تعيينه يوميًا",
+            "weekly": "يُعاد تعيينه أسبوعيًا",
+            "monthly": "يُعاد تعيينه شهريًا"
+          },
+          "noLimit": "لا يوجد حد إنفاق لهذا المفتاح.",
+          "setLimit": "تعيين حد",
+          "today": "اليوم",
+          "week": "الأسبوع",
+          "month": "الشهر",
+          "total": "الإجمالي",
+          "freeTier": "حساب مجاني: أضف رصيدًا في OpenRouter لاستخدام النماذج المدفوعة.",
+          "addCredits": "إضافة رصيد"
+        },
+        "pickModel": "اختر نموذجًا سحابيًا أدناه لتحويل الإملاء إلى السحابة."
+      },
+      "cloudModels": {
+        "title": "النماذج السحابية · OpenRouter",
+        "refresh": "تحديث قائمة النماذج",
+        "keyRequired": "أضف مفتاح API لاستخدام النسخ السحابي.",
+        "addKey": "إضافة مفتاح",
+        "showAll": "عرض كل النماذج السحابية ({{total}})",
+        "showFewer": "عرض أقل",
+        "fetchFailed": "تعذّر تحميل قائمة النماذج: {{error}}"
       }
     }
   },

@@ -22,6 +22,14 @@
     "subtitle": "To get started, choose a transcription model",
     "existingModelsTitle": "Compatible Models",
     "downloadModelsTitle": "Available to Download",
+    "cloud": {
+      "title": "Or transcribe in the cloud",
+      "description": "Use an OpenRouter speech-to-text model (openai/gpt-transcribe by default) without downloading anything. Audio is sent to OpenRouter and billed to your account.",
+      "apiKeyPlaceholder": "OpenRouter API key",
+      "use": "Use Cloud",
+      "getKey": "Get an API key",
+      "rejected": "OpenRouter rejected this key. Check it and try again."
+    },
     "showAllModels": "Show all {{total}} models",
     "showFewerModels": "Show fewer models",
     "recommended": "Recommended",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "A large, slower, but very accurate multilingual model."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transcribes in the cloud via OpenRouter. No download needed, but audio leaves your device."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Custom",
+    "cloud": "Cloud",
     "legacy": "Legacy",
     "streaming": "Streaming",
     "active": "Active",
@@ -227,7 +240,74 @@
         "label": "Rescan",
         "tooltip": "Rescan for models added to the models folder or Hugging Face cache outside Handy"
       },
-      "noModelsMatch": "No models match this filter."
+      "noModelsMatch": "No models match this filter.",
+      "cloud": {
+        "title": "Cloud Transcription",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transcribe with an OpenRouter speech-to-text model instead of a local one. Audio is sent to OpenRouter and billed to your account.",
+        "status": {
+          "active": "Active",
+          "off": "Off",
+          "noKey": "No key",
+          "rejected": "Key rejected"
+        },
+        "apiKey": {
+          "title": "API Key",
+          "description": "Stored on this device. Post-processing also uses it when OpenRouter is its provider.",
+          "placeholder": "sk-or-...",
+          "show": "Show key",
+          "hide": "Hide key",
+          "checking": "Checking key…",
+          "valid": "Key “{{label}}” is valid",
+          "validPlain": "Key is valid",
+          "rejected": "OpenRouter rejected this key",
+          "checkFailed": "Couldn't check the key: {{error}}",
+          "recheck": "Check again"
+        },
+        "getKey": "Get a key",
+        "balance": {
+          "title": "Balance",
+          "refresh": "Refresh balance",
+          "account": {
+            "title": "Account balance",
+            "summary": "{{credits}} added · {{spent}} spent",
+            "needsManagementKey": "OpenRouter shows the account balance only to a management key.",
+            "addManagementKey": "Add management key",
+            "managementKey": "Management key",
+            "managementKeyHint": "Only used to read the balance. A management key can create and delete API keys, so give it an expiry date.",
+            "createManagementKey": "Create a key",
+            "managementKeyRejected": "OpenRouter rejected the management key.",
+            "unavailable": "Could not load the account balance: {{error}}"
+          },
+          "key": {
+            "title": "This key"
+          },
+          "remaining": "<b>{{remaining}}</b> left of {{limit}}",
+          "resets": {
+            "daily": "Resets daily",
+            "weekly": "Resets weekly",
+            "monthly": "Resets monthly"
+          },
+          "noLimit": "This key has no spending limit.",
+          "setLimit": "Set a limit",
+          "today": "Today",
+          "week": "Week",
+          "month": "Month",
+          "total": "All time",
+          "freeTier": "Free account: add credits on OpenRouter to use paid models.",
+          "addCredits": "Add credits"
+        },
+        "pickModel": "Pick a cloud model below to switch dictation to the cloud."
+      },
+      "cloudModels": {
+        "title": "Cloud Models · OpenRouter",
+        "refresh": "Refresh model list",
+        "keyRequired": "Add an API key to use cloud transcription.",
+        "addKey": "Add key",
+        "showAll": "Show all cloud models ({{total}})",
+        "showFewer": "Show fewer",
+        "fetchFailed": "Could not load the model list: {{error}}"
+      }
     },
     "sound": {
       "title": "Sound",

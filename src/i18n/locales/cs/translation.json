@@ -22,6 +22,14 @@
     "subtitle": "Pro začátek vyberte model pro přepis",
     "existingModelsTitle": "Kompatibilní modely",
     "downloadModelsTitle": "Dostupné ke stažení",
+    "cloud": {
+      "title": "Nebo přepisujte v cloudu",
+      "description": "Použijte model převodu řeči na text z OpenRouter (výchozí je openai/gpt-transcribe) bez stahování. Zvuk se odesílá do OpenRouter a účtuje se na váš účet.",
+      "apiKeyPlaceholder": "API klíč OpenRouter",
+      "use": "Použít cloud",
+      "getKey": "Získat API klíč",
+      "rejected": "OpenRouter tento klíč odmítl. Zkontrolujte ho a zkuste to znovu."
+    },
     "showAllModels": "Zobrazit všech {{total}} modelů",
     "showFewerModels": "Zobrazit méně modelů",
     "recommended": "Doporučeno",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Velký, pomalejší, ale velmi přesný vícejazyčný model."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Přepisuje v cloudu přes OpenRouter. Nic není třeba stahovat, ale zvuk opouští vaše zařízení."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Vlastní",
+    "cloud": "Cloud",
     "streaming": "Streaming",
     "active": "Aktivní",
     "noModelsAvailable": "Nejsou dostupné žádné modely",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "Znovu prohledat",
         "tooltip": "Znovu prohledat modely přidané do složky modelů nebo mezipaměti Hugging Face mimo Handy"
+      },
+      "cloud": {
+        "title": "Přepis v cloudu",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Přepisujte pomocí modelu převodu řeči na text z OpenRouter místo lokálního modelu. Zvuk se odesílá do OpenRouter a účtuje se na váš účet.",
+        "status": {
+          "active": "Aktivní",
+          "off": "Vypnuto",
+          "noKey": "Bez klíče",
+          "rejected": "Klíč odmítnut"
+        },
+        "apiKey": {
+          "title": "API klíč",
+          "description": "Uložen v tomto zařízení. Používá ho i následné zpracování, pokud je v něm vybrán OpenRouter.",
+          "placeholder": "sk-or-...",
+          "show": "Zobrazit klíč",
+          "hide": "Skrýt klíč",
+          "checking": "Ověřování klíče…",
+          "valid": "Klíč „{{label}}“ je platný",
+          "validPlain": "Klíč je platný",
+          "rejected": "OpenRouter tento klíč odmítl",
+          "checkFailed": "Klíč se nepodařilo ověřit: {{error}}",
+          "recheck": "Ověřit znovu"
+        },
+        "getKey": "Získat klíč",
+        "balance": {
+          "title": "Zůstatek",
+          "refresh": "Obnovit zůstatek",
+          "account": {
+            "title": "Zůstatek účtu",
+            "summary": "Dobito {{credits}} · utraceno {{spent}}",
+            "needsManagementKey": "OpenRouter zobrazuje zůstatek účtu jen správcovskému klíči (management key).",
+            "addManagementKey": "Přidat správcovský klíč",
+            "managementKey": "Správcovský klíč",
+            "managementKeyHint": "Slouží jen ke čtení zůstatku. Správcovský klíč může vytvářet a mazat API klíče, proto mu nastavte datum vypršení.",
+            "createManagementKey": "Vytvořit klíč",
+            "managementKeyRejected": "OpenRouter správcovský klíč odmítl.",
+            "unavailable": "Zůstatek účtu se nepodařilo načíst: {{error}}"
+          },
+          "key": {
+            "title": "Tento klíč"
+          },
+          "remaining": "Zbývá <b>{{remaining}}</b> z {{limit}}",
+          "resets": {
+            "daily": "Obnovuje se denně",
+            "weekly": "Obnovuje se týdně",
+            "monthly": "Obnovuje se měsíčně"
+          },
+          "noLimit": "Tento klíč nemá limit útraty.",
+          "setLimit": "Nastavit limit",
+          "today": "Dnes",
+          "week": "Týden",
+          "month": "Měsíc",
+          "total": "Celkem",
+          "freeTier": "Bezplatný účet: dobijte si kredit na OpenRouter, abyste mohli používat placené modely.",
+          "addCredits": "Dobít kredit"
+        },
+        "pickModel": "Vyberte níže cloudový model a diktujte v cloudu."
+      },
+      "cloudModels": {
+        "title": "Cloudové modely · OpenRouter",
+        "refresh": "Obnovit seznam modelů",
+        "keyRequired": "Pro přepis v cloudu přidejte API klíč.",
+        "addKey": "Přidat klíč",
+        "showAll": "Zobrazit všechny cloudové modely ({{total}})",
+        "showFewer": "Zobrazit méně",
+        "fetchFailed": "Seznam modelů se nepodařilo načíst: {{error}}"
       }
     },
     "general": {

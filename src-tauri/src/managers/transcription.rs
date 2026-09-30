@@ -2,6 +2,7 @@ use crate::audio_toolkit::{
     apply_custom_words, detect_output_language, normalize_transcription_output,
     remove_filler_words, OutputLanguageEvidence,
 };
+use crate::cloud_transcription::{self, CloudConfig};
 use crate::managers::audio::AudioRecordingManager;
 use crate::managers::model::{EngineType, ModelManager};
 use crate::settings::{
@@ -188,6 +189,9 @@ enum LoadedEngine {
     GigaAM(GigaAMModel),
     Canary(CanaryModel),
     Cohere(CohereModel),
+    /// Nothing to hold in memory: each run is an HTTP request configured from
+    /// the current settings (see `cloud_transcription`).
+    OpenRouter,
 }
 
 /// RAII guard that clears the `is_loading` flag and notifies waiters on drop.
@@ -705,6 +709,8 @@ impl TranscriptionManager {
                 })?;
                 LoadedEngine::Cohere(engine)
             }
+            // get_model_path above already verified the API key is set.
+            EngineType::OpenRouter => LoadedEngine::OpenRouter,
         };
 
         // Update the current engine and model ID
@@ -785,6 +791,7 @@ impl TranscriptionManager {
             Some(LoadedEngine::TranscribeCpp(session)) => {
                 Some(session.model().backend().to_string())
             }
+            Some(LoadedEngine::OpenRouter) => Some("cloud".to_string()),
             Some(_) => Some("onnx".to_string()),
             None => None,
         }
@@ -1428,6 +1435,20 @@ impl TranscriptionManager {
                             .transcribe(&audio, &options)
                             .map(|r| r.text)
                             .map_err(|e| anyhow::anyhow!("Cohere transcription failed: {}", e))
+                    }
+                    LoadedEngine::OpenRouter => {
+                        let language = cloud_transcription::language_hint(&validated_language);
+                        applied_language_hint = language.clone();
+                        CloudConfig::from_settings(&settings)
+                            .and_then(|config| {
+                                cloud_transcription::transcribe_blocking(
+                                    &config,
+                                    &audio,
+                                    language,
+                                    &settings.custom_words,
+                                )
+                            })
+                            .map_err(|e| anyhow::anyhow!("Cloud transcription failed: {}", e))
                     }
                 }
             }));

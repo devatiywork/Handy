@@ -22,6 +22,14 @@
     "subtitle": "请选择一个转录模型以开始使用",
     "existingModelsTitle": "兼容的模型",
     "downloadModelsTitle": "可供下载",
+    "cloud": {
+      "title": "或在云端转录",
+      "description": "无需下载，直接使用 OpenRouter 的语音转文字模型（默认 openai/gpt-transcribe）。音频会发送到 OpenRouter，费用计入你的账户。",
+      "apiKeyPlaceholder": "OpenRouter API 密钥",
+      "use": "使用云端",
+      "getKey": "获取 API 密钥",
+      "rejected": "OpenRouter 拒绝了此密钥。请检查后重试。"
+    },
     "showAllModels": "显示全部 {{total}} 个模型",
     "showFewerModels": "显示较少模型",
     "recommended": "推荐",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "大型模型，速度较慢，但多语言识别非常准确。"
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "通过 OpenRouter 在云端转录。无需下载，但音频会离开你的设备。"
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "自定义",
+    "cloud": "云端",
     "streaming": "流式",
     "active": "活跃",
     "switching": "切换中...",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "重新扫描",
         "tooltip": "重新扫描在 Handy 之外添加到模型文件夹或 Hugging Face 缓存中的模型"
+      },
+      "cloud": {
+        "title": "云端转录",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "使用 OpenRouter 的语音转文字模型代替本地模型进行转录。音频会发送到 OpenRouter，费用计入你的账户。",
+        "status": {
+          "active": "已启用",
+          "off": "已关闭",
+          "noKey": "无密钥",
+          "rejected": "密钥被拒"
+        },
+        "apiKey": {
+          "title": "API 密钥",
+          "description": "保存在本设备上。当后处理选择 OpenRouter 作为提供商时也会使用它。",
+          "placeholder": "sk-or-...",
+          "show": "显示密钥",
+          "hide": "隐藏密钥",
+          "checking": "正在检查密钥…",
+          "valid": "密钥“{{label}}”有效",
+          "validPlain": "密钥有效",
+          "rejected": "OpenRouter 拒绝了此密钥",
+          "checkFailed": "无法检查密钥：{{error}}",
+          "recheck": "重新检查"
+        },
+        "getKey": "获取密钥",
+        "balance": {
+          "title": "余额",
+          "refresh": "刷新余额",
+          "account": {
+            "title": "账户余额",
+            "summary": "已充值 {{credits}} · 已消费 {{spent}}",
+            "needsManagementKey": "OpenRouter 仅向管理密钥（management key）显示账户余额。",
+            "addManagementKey": "添加管理密钥",
+            "managementKey": "管理密钥",
+            "managementKeyHint": "仅用于读取余额。管理密钥可以创建和删除 API 密钥，请为其设置过期日期。",
+            "createManagementKey": "创建密钥",
+            "managementKeyRejected": "OpenRouter 拒绝了此管理密钥。",
+            "unavailable": "无法加载账户余额：{{error}}"
+          },
+          "key": {
+            "title": "此密钥"
+          },
+          "remaining": "剩余 <b>{{remaining}}</b>，共 {{limit}}",
+          "resets": {
+            "daily": "每日重置",
+            "weekly": "每周重置",
+            "monthly": "每月重置"
+          },
+          "noLimit": "此密钥未设置支出上限。",
+          "setLimit": "设置上限",
+          "today": "今天",
+          "week": "本周",
+          "month": "本月",
+          "total": "累计",
+          "freeTier": "免费账户：在 OpenRouter 充值后才能使用付费模型。",
+          "addCredits": "充值"
+        },
+        "pickModel": "在下方选择一个云端模型即可切换到云端听写。"
+      },
+      "cloudModels": {
+        "title": "云端模型 · OpenRouter",
+        "refresh": "刷新模型列表",
+        "keyRequired": "添加 API 密钥以使用云端转录。",
+        "addKey": "添加密钥",
+        "showAll": "显示全部云端模型（{{total}}）",
+        "showFewer": "收起",
+        "fetchFailed": "无法加载模型列表：{{error}}"
       }
     },
     "general": {

@@ -194,6 +194,10 @@ const settingUpdaters: {
     commands.changeTranscribeGpuDevice(value as string | null),
   extra_recording_buffer_ms: (value) =>
     commands.changeExtraRecordingBufferSetting(value as number),
+  cloud_transcription_model: (value) =>
+    commands.changeCloudTranscriptionModelSetting(value as string),
+  openrouter_management_key: (value) =>
+    commands.changeOpenrouterManagementKeySetting(value as string),
 };
 
 export const useSettingsStore = create<SettingsStore>()(

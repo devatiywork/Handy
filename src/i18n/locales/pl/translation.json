@@ -22,6 +22,14 @@
     "subtitle": "Aby rozpocząć, wybierz model transkrypcji",
     "existingModelsTitle": "Zgodne modele",
     "downloadModelsTitle": "Dostępne do pobrania",
+    "cloud": {
+      "title": "Lub transkrybuj w chmurze",
+      "description": "Użyj modelu rozpoznawania mowy z OpenRouter (domyślnie openai/gpt-transcribe) bez pobierania czegokolwiek. Dźwięk jest wysyłany do OpenRouter, a opłaty są naliczane na Twoje konto.",
+      "apiKeyPlaceholder": "Klucz API OpenRouter",
+      "use": "Użyj chmury",
+      "getKey": "Uzyskaj klucz API",
+      "rejected": "OpenRouter odrzucił ten klucz. Sprawdź go i spróbuj ponownie."
+    },
     "showAllModels": "Pokaż wszystkie modele ({{total}})",
     "showFewerModels": "Pokaż mniej modeli",
     "recommended": "Polecane",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Duży, wolniejszy, ale bardzo dokładny model wielojęzyczny."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transkrybuje w chmurze przez OpenRouter. Nie trzeba nic pobierać, ale dźwięk opuszcza Twoje urządzenie."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Własny",
+    "cloud": "Chmura",
     "streaming": "Streaming",
     "active": "Aktywny",
     "switching": "Przełączanie...",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "Skanuj ponownie",
         "tooltip": "Skanuj ponownie w poszukiwaniu modeli dodanych do folderu modeli lub pamięci podręcznej Hugging Face poza Handy"
+      },
+      "cloud": {
+        "title": "Transkrypcja w chmurze",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transkrybuj modelem rozpoznawania mowy z OpenRouter zamiast lokalnego. Dźwięk jest wysyłany do OpenRouter, a opłaty są naliczane na Twoje konto.",
+        "status": {
+          "active": "Aktywna",
+          "off": "Wyłączona",
+          "noKey": "Brak klucza",
+          "rejected": "Klucz odrzucony"
+        },
+        "apiKey": {
+          "title": "Klucz API",
+          "description": "Przechowywany na tym urządzeniu. Postproces również go używa, gdy wybrano w nim OpenRouter.",
+          "placeholder": "sk-or-...",
+          "show": "Pokaż klucz",
+          "hide": "Ukryj klucz",
+          "checking": "Sprawdzanie klucza…",
+          "valid": "Klucz „{{label}}” jest prawidłowy",
+          "validPlain": "Klucz jest prawidłowy",
+          "rejected": "OpenRouter odrzucił ten klucz",
+          "checkFailed": "Nie udało się sprawdzić klucza: {{error}}",
+          "recheck": "Sprawdź ponownie"
+        },
+        "getKey": "Uzyskaj klucz",
+        "balance": {
+          "title": "Saldo",
+          "refresh": "Odśwież saldo",
+          "account": {
+            "title": "Saldo konta",
+            "summary": "Doładowano {{credits}} · wydano {{spent}}",
+            "needsManagementKey": "OpenRouter pokazuje saldo konta tylko kluczowi zarządzającemu (management key).",
+            "addManagementKey": "Dodaj klucz zarządzający",
+            "managementKey": "Klucz zarządzający",
+            "managementKeyHint": "Służy wyłącznie do odczytu salda. Klucz zarządzający może tworzyć i usuwać klucze API, więc ustaw mu datę wygaśnięcia.",
+            "createManagementKey": "Utwórz klucz",
+            "managementKeyRejected": "OpenRouter odrzucił klucz zarządzający.",
+            "unavailable": "Nie udało się wczytać salda konta: {{error}}"
+          },
+          "key": {
+            "title": "Ten klucz"
+          },
+          "remaining": "Pozostało <b>{{remaining}}</b> z {{limit}}",
+          "resets": {
+            "daily": "Odnawia się codziennie",
+            "weekly": "Odnawia się co tydzień",
+            "monthly": "Odnawia się co miesiąc"
+          },
+          "noLimit": "Ten klucz nie ma limitu wydatków.",
+          "setLimit": "Ustaw limit",
+          "today": "Dziś",
+          "week": "Tydzień",
+          "month": "Miesiąc",
+          "total": "Łącznie",
+          "freeTier": "Darmowe konto: doładuj środki w OpenRouter, aby korzystać z płatnych modeli.",
+          "addCredits": "Doładuj"
+        },
+        "pickModel": "Wybierz poniżej model w chmurze, aby dyktować w chmurze."
+      },
+      "cloudModels": {
+        "title": "Modele w chmurze · OpenRouter",
+        "refresh": "Odśwież listę modeli",
+        "keyRequired": "Dodaj klucz API, aby korzystać z transkrypcji w chmurze.",
+        "addKey": "Dodaj klucz",
+        "showAll": "Pokaż wszystkie modele w chmurze ({{total}})",
+        "showFewer": "Pokaż mniej",
+        "fetchFailed": "Nie udało się wczytać listy modeli: {{error}}"
       }
     },
     "general": {

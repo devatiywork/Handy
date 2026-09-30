@@ -22,6 +22,14 @@
     "subtitle": "शुरू करने के लिए, एक ट्रांसक्रिप्शन मॉडल चुनें",
     "existingModelsTitle": "संगत मॉडल",
     "downloadModelsTitle": "डाउनलोड के लिए उपलब्ध",
+    "cloud": {
+      "title": "या क्लाउड में ट्रांसक्राइब करें",
+      "description": "बिना कुछ डाउनलोड किए OpenRouter का स्पीच-टू-टेक्स्ट मॉडल (डिफ़ॉल्ट रूप से openai/gpt-transcribe) इस्तेमाल करें. ऑडियो OpenRouter को भेजा जाता है और शुल्क आपके खाते से लिया जाता है.",
+      "apiKeyPlaceholder": "OpenRouter API कुंजी",
+      "use": "क्लाउड इस्तेमाल करें",
+      "getKey": "API कुंजी पाएं",
+      "rejected": "OpenRouter ने यह कुंजी अस्वीकार कर दी. इसे जांचें और फिर से कोशिश करें."
+    },
     "showAllModels": "सभी {{total}} मॉडल दिखाएं",
     "showFewerModels": "कम मॉडल दिखाएं",
     "recommended": "सुझाया गया",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "बड़ा और थोड़ा धीमा, लेकिन बहुत सटीक बहुभाषी मॉडल."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "OpenRouter के ज़रिए क्लाउड में ट्रांसक्राइब करता है. कुछ डाउनलोड नहीं करना पड़ता, लेकिन ऑडियो आपके डिवाइस से बाहर जाता है."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "कस्टम",
+    "cloud": "क्लाउड",
     "legacy": "लीगेसी",
     "streaming": "स्ट्रीमिंग",
     "active": "इस्तेमाल में",
@@ -227,7 +240,74 @@
         "label": "फिर से स्कैन करें",
         "tooltip": "Handy के बाहर, मॉडल फ़ोल्डर या Hugging Face कैश में जोड़े गए मॉडल के लिए फिर से स्कैन करें"
       },
-      "noModelsMatch": "इस फ़िल्टर से मेल खाने वाला कोई मॉडल नहीं है."
+      "noModelsMatch": "इस फ़िल्टर से मेल खाने वाला कोई मॉडल नहीं है.",
+      "cloud": {
+        "title": "क्लाउड ट्रांसक्रिप्शन",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "लोकल मॉडल के बजाय OpenRouter के स्पीच-टू-टेक्स्ट मॉडल से ट्रांसक्राइब करें. ऑडियो OpenRouter को भेजा जाता है और शुल्क आपके खाते से लिया जाता है.",
+        "status": {
+          "active": "चालू",
+          "off": "बंद",
+          "noKey": "कुंजी नहीं",
+          "rejected": "कुंजी अस्वीकृत"
+        },
+        "apiKey": {
+          "title": "API कुंजी",
+          "description": "इस डिवाइस पर सेव रहती है. जब पोस्ट प्रोसेस में OpenRouter चुना हो, तो वह भी इसका इस्तेमाल करता है.",
+          "placeholder": "sk-or-...",
+          "show": "कुंजी दिखाएं",
+          "hide": "कुंजी छिपाएं",
+          "checking": "कुंजी जांची जा रही है…",
+          "valid": "कुंजी “{{label}}” मान्य है",
+          "validPlain": "कुंजी मान्य है",
+          "rejected": "OpenRouter ने यह कुंजी अस्वीकार कर दी",
+          "checkFailed": "कुंजी जांची नहीं जा सकी: {{error}}",
+          "recheck": "फिर से जांचें"
+        },
+        "getKey": "कुंजी पाएं",
+        "balance": {
+          "title": "बैलेंस",
+          "refresh": "बैलेंस रीफ़्रेश करें",
+          "account": {
+            "title": "खाते का बैलेंस",
+            "summary": "{{credits}} जोड़े गए · {{spent}} खर्च हुए",
+            "needsManagementKey": "OpenRouter खाते का बैलेंस सिर्फ़ मैनेजमेंट कुंजी (management key) को दिखाता है.",
+            "addManagementKey": "मैनेजमेंट कुंजी जोड़ें",
+            "managementKey": "मैनेजमेंट कुंजी",
+            "managementKeyHint": "इसका इस्तेमाल सिर्फ़ बैलेंस पढ़ने के लिए होता है. मैनेजमेंट कुंजी API कुंजियां बना और हटा सकती है, इसलिए इसकी समाप्ति तिथि तय करें.",
+            "createManagementKey": "कुंजी बनाएं",
+            "managementKeyRejected": "OpenRouter ने मैनेजमेंट कुंजी अस्वीकार कर दी.",
+            "unavailable": "खाते का बैलेंस लोड नहीं हो सका: {{error}}"
+          },
+          "key": {
+            "title": "यह कुंजी"
+          },
+          "remaining": "{{limit}} में से <b>{{remaining}}</b> बचा है",
+          "resets": {
+            "daily": "रोज़ रीसेट होता है",
+            "weekly": "हर हफ़्ते रीसेट होता है",
+            "monthly": "हर महीने रीसेट होता है"
+          },
+          "noLimit": "इस कुंजी पर खर्च की कोई सीमा नहीं है.",
+          "setLimit": "सीमा तय करें",
+          "today": "आज",
+          "week": "हफ़्ता",
+          "month": "महीना",
+          "total": "कुल",
+          "freeTier": "मुफ़्त खाता: पेड मॉडल इस्तेमाल करने के लिए OpenRouter पर क्रेडिट जोड़ें.",
+          "addCredits": "क्रेडिट जोड़ें"
+        },
+        "pickModel": "क्लाउड में डिक्टेशन के लिए नीचे कोई क्लाउड मॉडल चुनें."
+      },
+      "cloudModels": {
+        "title": "क्लाउड मॉडल · OpenRouter",
+        "refresh": "मॉडल सूची रीफ़्रेश करें",
+        "keyRequired": "क्लाउड ट्रांसक्रिप्शन इस्तेमाल करने के लिए API कुंजी जोड़ें.",
+        "addKey": "कुंजी जोड़ें",
+        "showAll": "सभी क्लाउड मॉडल दिखाएं ({{total}})",
+        "showFewer": "कम दिखाएं",
+        "fetchFailed": "मॉडल सूची लोड नहीं हो सकी: {{error}}"
+      }
     },
     "sound": {
       "title": "आवाज़",

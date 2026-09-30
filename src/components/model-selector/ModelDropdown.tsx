@@ -5,6 +5,8 @@ import {
   getTranslatedModelName,
   getTranslatedModelDescription,
 } from "../../lib/utils/modelTranslation";
+import { DEFAULT_CLOUD_MODEL, isCloudModel } from "../../lib/utils/cloudModel";
+import { useSettingsStore } from "@/stores/settingsStore";
 
 interface ModelDropdownProps {
   models: ModelInfo[];
@@ -18,6 +20,9 @@ const ModelDropdown: React.FC<ModelDropdownProps> = ({
   onModelSelect,
 }) => {
   const { t } = useTranslation();
+  const cloudModel = useSettingsStore(
+    (state) => state.settings?.cloud_transcription_model || DEFAULT_CLOUD_MODEL,
+  );
   const downloadedModels = models.filter((m) => m.is_downloaded);
 
   const handleModelClick = (modelId: string) => {
@@ -55,6 +60,11 @@ const ModelDropdown: React.FC<ModelDropdownProps> = ({
                         {t("modelSelector.custom")}
                       </span>
                     )}
+                    {isCloudModel(model) && (
+                      <span className="ms-1.5 text-[10px] font-medium text-text/40 uppercase">
+                        {t("modelSelector.cloud")}
+                      </span>
+                    )}
                     {model.supports_streaming && (
                       <span className="ms-1.5 text-[10px] font-medium text-logo-primary/70 uppercase">
                         {t("modelSelector.streaming")}
@@ -62,7 +72,9 @@ const ModelDropdown: React.FC<ModelDropdownProps> = ({
                     )}
                   </div>
                   <div className="text-xs text-text/40 italic pe-4">
-                    {getTranslatedModelDescription(model, t)}
+                    {isCloudModel(model)
+                      ? cloudModel
+                      : getTranslatedModelDescription(model, t)}
                   </div>
                 </div>
                 {currentModelId === model.id && (

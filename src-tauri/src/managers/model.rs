@@ -36,6 +36,8 @@ pub enum EngineType {
     GigaAM,
     Canary,
     Cohere,
+    /// Remote speech-to-text through OpenRouter; see `cloud_transcription`.
+    OpenRouter,
 }
 
 /// Where a model comes from and how Handy obtains it — the routing discriminant
@@ -55,6 +57,8 @@ pub enum ModelSource {
     /// Already present on disk — a user-provided custom model, or one discovered
     /// in a shared cache. Nothing to download.
     Local,
+    /// Runs on a remote service. Nothing on disk; usable once its API key is set.
+    Cloud,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, Type)]
@@ -555,6 +559,7 @@ impl ModelManager {
         .into_iter()
         .map(String::from)
         .collect();
+        let cloud_languages = whisper_languages.clone();
 
         available_models.insert(
             "small".to_string(),
@@ -1120,6 +1125,11 @@ impl ModelManager {
             },
         );
 
+        available_models.insert(
+            crate::cloud_transcription::CLOUD_MODEL_ID.to_string(),
+            crate::cloud_transcription::model_info(cloud_languages),
+        );
+
         // Seed the bundled offline catalog before the on-disk scans, so a model
         // already in the HF cache dedups onto its richer catalog entry (the scans
         // only insert ids not already present) instead of showing as a bare cache
@@ -1385,6 +1395,10 @@ impl ModelManager {
         let mut vanished_models: Vec<String> = Vec::new();
 
         for model in models.values_mut() {
+            // Nothing on disk to check: a cloud model stays available.
+            if matches!(model.source, ModelSource::Cloud) {
+                continue;
+            }
             if let ModelSource::HuggingFace { repo_id, revision } = &model.source {
                 // A models-dir copy counts too: mirror-fallback downloads land
                 // there, and it makes manual drop-ins of catalog files work.
@@ -1550,13 +1564,12 @@ impl ModelManager {
         }
 
         // If no model is selected, pick the first downloaded one using the same
-        // ranked order the UI receives.
+        // ranked order the UI receives. The cloud model is never picked
+        // implicitly: it sends audio off the device and costs money.
         if settings.selected_model.is_empty() {
-            if let Some(available_model) = self
-                .get_available_models()
-                .into_iter()
-                .find(|model| model.is_downloaded)
-            {
+            if let Some(available_model) = self.get_available_models().into_iter().find(|model| {
+                model.is_downloaded && !crate::cloud_transcription::is_cloud_model(model)
+            }) {
                 info!(
                     "Auto-selecting model: {} ({})",
                     available_model.id, available_model.name
@@ -2214,6 +2227,9 @@ impl ModelManager {
             ModelSource::Local => {
                 return Err(anyhow::anyhow!("No download source for model"));
             }
+            ModelSource::Cloud => {
+                return Err(anyhow::anyhow!("Cloud models do not need to be downloaded"));
+            }
         };
         let model_path = self.models_dir.join(&model_info.filename);
         let partial_path = self
@@ -2406,6 +2422,10 @@ impl ModelManager {
 
         debug!("ModelManager: Found model info: {:?}", model_info);
 
+        if matches!(model_info.source, ModelSource::Cloud) {
+            return Err(anyhow::anyhow!("Cloud models have nothing to delete"));
+        }
+
         if let ModelSource::HuggingFace { repo_id, revision } = &model_info.source {
             let is_alternate_quant =
                 Self::is_catalog_alternate_quant(repo_id, &model_info.filename);
@@ -2574,6 +2594,15 @@ impl ModelManager {
                 "Model is currently downloading: {}",
                 model_id
             ));
+        }
+
+        // A cloud model has no files; it is ready once its API key is set. The
+        // empty path lets "can this model run" callers (the recording pre-check,
+        // model load) treat it like any other model.
+        if matches!(model_info.source, ModelSource::Cloud) {
+            crate::cloud_transcription::CloudConfig::from_settings(&get_settings(&self.app_handle))
+                .map_err(|e| anyhow::anyhow!(e))?;
+            return Ok(PathBuf::new());
         }
 
         if let ModelSource::HuggingFace { repo_id, revision } = &model_info.source {

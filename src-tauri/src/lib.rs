@@ -7,6 +7,7 @@ mod autostart;
 mod catalog;
 pub mod cli;
 mod clipboard;
+mod cloud_transcription;
 mod commands;
 mod helpers;
 mod input;
@@ -162,10 +163,13 @@ fn should_force_show_permissions_window(app: &AppHandle) -> bool {
     #[cfg(target_os = "windows")]
     {
         let model_manager = app.state::<Arc<ModelManager>>();
-        let has_downloaded_models = model_manager
-            .get_available_models()
-            .iter()
-            .any(|model| model.is_downloaded);
+        // The cloud model is always "downloaded"; it only marks a set-up user
+        // once they have actually chosen it.
+        let selected_model = settings::get_settings(app).selected_model;
+        let has_downloaded_models = model_manager.get_available_models().iter().any(|model| {
+            model.is_downloaded
+                && (!cloud_transcription::is_cloud_model(model) || model.id == selected_model)
+        });
 
         if !has_downloaded_models {
             return false;
@@ -736,6 +740,10 @@ pub fn run(cli_args: CliArgs) {
             commands::models::get_transcription_model_status,
             commands::models::is_model_loading,
             commands::models::rescan_local_models,
+            commands::cloud::change_cloud_transcription_model_setting,
+            commands::cloud::fetch_cloud_transcription_models,
+            commands::cloud::check_cloud_transcription_key,
+            commands::cloud::change_openrouter_management_key_setting,
             commands::audio::update_microphone_mode,
             commands::audio::get_microphone_mode,
             commands::audio::get_windows_microphone_permission_status,

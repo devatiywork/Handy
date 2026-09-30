@@ -22,6 +22,14 @@
     "subtitle": "Wähle ein Transkriptionsmodell, um loszulegen",
     "existingModelsTitle": "Kompatible Modelle",
     "downloadModelsTitle": "Verfügbar zum Download",
+    "cloud": {
+      "title": "Oder in der Cloud transkribieren",
+      "description": "Nutze ein Spracherkennungsmodell von OpenRouter (standardmäßig openai/gpt-transcribe), ohne etwas herunterzuladen. Das Audio wird an OpenRouter gesendet und über dein Konto abgerechnet.",
+      "apiKeyPlaceholder": "OpenRouter-API-Schlüssel",
+      "use": "Cloud nutzen",
+      "getKey": "API-Schlüssel holen",
+      "rejected": "OpenRouter hat diesen Schlüssel abgelehnt. Prüfe ihn und versuche es erneut."
+    },
     "showAllModels": "Alle {{total}} Modelle anzeigen",
     "showFewerModels": "Weniger Modelle anzeigen",
     "recommended": "Empfohlen",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Ein großes, langsameres, aber sehr genaues mehrsprachiges Modell."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transkribiert in der Cloud über OpenRouter. Kein Download nötig, aber das Audio verlässt dein Gerät."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Benutzerdefiniert",
+    "cloud": "Cloud",
     "streaming": "Streaming",
     "active": "Aktiv",
     "switching": "Wechseln...",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "Neu scannen",
         "tooltip": "Erneut nach Modellen scannen, die außerhalb von Handy zum Modellordner oder Hugging-Face-Cache hinzugefügt wurden"
+      },
+      "cloud": {
+        "title": "Cloud-Transkription",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transkribiere mit einem Spracherkennungsmodell von OpenRouter statt mit einem lokalen Modell. Das Audio wird an OpenRouter gesendet und über dein Konto abgerechnet.",
+        "status": {
+          "active": "Aktiv",
+          "off": "Aus",
+          "noKey": "Kein Schlüssel",
+          "rejected": "Schlüssel abgelehnt"
+        },
+        "apiKey": {
+          "title": "API-Schlüssel",
+          "description": "Wird auf diesem Gerät gespeichert. Die Nachbearbeitung nutzt ihn ebenfalls, wenn dort OpenRouter ausgewählt ist.",
+          "placeholder": "sk-or-...",
+          "show": "Schlüssel anzeigen",
+          "hide": "Schlüssel verbergen",
+          "checking": "Schlüssel wird geprüft…",
+          "valid": "Schlüssel „{{label}}“ ist gültig",
+          "validPlain": "Schlüssel ist gültig",
+          "rejected": "OpenRouter hat diesen Schlüssel abgelehnt",
+          "checkFailed": "Schlüssel konnte nicht geprüft werden: {{error}}",
+          "recheck": "Erneut prüfen"
+        },
+        "getKey": "Schlüssel holen",
+        "balance": {
+          "title": "Guthaben",
+          "refresh": "Guthaben aktualisieren",
+          "account": {
+            "title": "Kontoguthaben",
+            "summary": "{{credits}} aufgeladen · {{spent}} ausgegeben",
+            "needsManagementKey": "OpenRouter zeigt das Kontoguthaben nur einem Management-Schlüssel (management key).",
+            "addManagementKey": "Management-Schlüssel hinzufügen",
+            "managementKey": "Management-Schlüssel",
+            "managementKeyHint": "Wird nur zum Abrufen des Guthabens genutzt. Ein Management-Schlüssel kann API-Schlüssel erstellen und löschen – gib ihm daher ein Ablaufdatum.",
+            "createManagementKey": "Schlüssel erstellen",
+            "managementKeyRejected": "OpenRouter hat den Management-Schlüssel abgelehnt.",
+            "unavailable": "Kontoguthaben konnte nicht geladen werden: {{error}}"
+          },
+          "key": {
+            "title": "Dieser Schlüssel"
+          },
+          "remaining": "<b>{{remaining}}</b> von {{limit}} übrig",
+          "resets": {
+            "daily": "Wird täglich zurückgesetzt",
+            "weekly": "Wird wöchentlich zurückgesetzt",
+            "monthly": "Wird monatlich zurückgesetzt"
+          },
+          "noLimit": "Für diesen Schlüssel ist kein Ausgabenlimit festgelegt.",
+          "setLimit": "Limit festlegen",
+          "today": "Heute",
+          "week": "Woche",
+          "month": "Monat",
+          "total": "Gesamt",
+          "freeTier": "Kostenloses Konto: Lade bei OpenRouter Guthaben auf, um kostenpflichtige Modelle zu nutzen.",
+          "addCredits": "Guthaben aufladen"
+        },
+        "pickModel": "Wähle unten ein Cloud-Modell, um das Diktieren in die Cloud zu verlagern."
+      },
+      "cloudModels": {
+        "title": "Cloud-Modelle · OpenRouter",
+        "refresh": "Modellliste aktualisieren",
+        "keyRequired": "Füge einen API-Schlüssel hinzu, um die Cloud-Transkription zu nutzen.",
+        "addKey": "Schlüssel hinzufügen",
+        "showAll": "Alle Cloud-Modelle anzeigen ({{total}})",
+        "showFewer": "Weniger anzeigen",
+        "fetchFailed": "Modellliste konnte nicht geladen werden: {{error}}"
       }
     },
     "general": {

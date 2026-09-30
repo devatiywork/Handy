@@ -22,6 +22,14 @@
     "subtitle": "Untuk memulai, pilih model transkripsi",
     "existingModelsTitle": "Model yang Kompatibel",
     "downloadModelsTitle": "Tersedia untuk Diunduh",
+    "cloud": {
+      "title": "Atau transkripsikan di cloud",
+      "description": "Gunakan model ucapan-ke-teks dari OpenRouter (default openai/gpt-transcribe) tanpa mengunduh apa pun. Audio dikirim ke OpenRouter dan ditagihkan ke akun Anda.",
+      "apiKeyPlaceholder": "Kunci API OpenRouter",
+      "use": "Gunakan Cloud",
+      "getKey": "Dapatkan kunci API",
+      "rejected": "OpenRouter menolak kunci ini. Periksa lalu coba lagi."
+    },
     "showAllModels": "Tampilkan semua {{total}} model",
     "showFewerModels": "Tampilkan lebih sedikit model",
     "recommended": "Direkomendasikan",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Model multibahasa yang besar dan lebih lambat, tetapi sangat akurat."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Mentranskripsikan di cloud melalui OpenRouter. Tidak perlu mengunduh apa pun, tetapi audio keluar dari perangkat Anda."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Kustom",
+    "cloud": "Cloud",
     "legacy": "Legacy",
     "streaming": "Streaming",
     "active": "Aktif",
@@ -227,7 +240,74 @@
         "label": "Pindai Ulang",
         "tooltip": "Pindai ulang model yang ditambahkan ke folder model atau cache Hugging Face dari luar Handy"
       },
-      "noModelsMatch": "Tidak ada model yang cocok dengan kriteria ini."
+      "noModelsMatch": "Tidak ada model yang cocok dengan kriteria ini.",
+      "cloud": {
+        "title": "Transkripsi Cloud",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transkripsikan dengan model ucapan-ke-teks dari OpenRouter alih-alih model lokal. Audio dikirim ke OpenRouter dan ditagihkan ke akun Anda.",
+        "status": {
+          "active": "Aktif",
+          "off": "Mati",
+          "noKey": "Tidak ada kunci",
+          "rejected": "Kunci ditolak"
+        },
+        "apiKey": {
+          "title": "Kunci API",
+          "description": "Disimpan di perangkat ini. Pascaproses juga menggunakannya saat OpenRouter menjadi penyedianya.",
+          "placeholder": "sk-or-...",
+          "show": "Tampilkan kunci",
+          "hide": "Sembunyikan kunci",
+          "checking": "Memeriksa kunci…",
+          "valid": "Kunci “{{label}}” valid",
+          "validPlain": "Kunci valid",
+          "rejected": "OpenRouter menolak kunci ini",
+          "checkFailed": "Tidak dapat memeriksa kunci: {{error}}",
+          "recheck": "Periksa lagi"
+        },
+        "getKey": "Dapatkan kunci",
+        "balance": {
+          "title": "Saldo",
+          "refresh": "Segarkan saldo",
+          "account": {
+            "title": "Saldo akun",
+            "summary": "{{credits}} diisi · {{spent}} terpakai",
+            "needsManagementKey": "OpenRouter hanya menampilkan saldo akun untuk kunci manajemen (management key).",
+            "addManagementKey": "Tambah kunci manajemen",
+            "managementKey": "Kunci manajemen",
+            "managementKeyHint": "Hanya dipakai untuk membaca saldo. Kunci manajemen dapat membuat dan menghapus kunci API, jadi atur tanggal kedaluwarsanya.",
+            "createManagementKey": "Buat kunci",
+            "managementKeyRejected": "OpenRouter menolak kunci manajemen.",
+            "unavailable": "Gagal memuat saldo akun: {{error}}"
+          },
+          "key": {
+            "title": "Kunci ini"
+          },
+          "remaining": "Tersisa <b>{{remaining}}</b> dari {{limit}}",
+          "resets": {
+            "daily": "Direset setiap hari",
+            "weekly": "Direset setiap minggu",
+            "monthly": "Direset setiap bulan"
+          },
+          "noLimit": "Kunci ini tidak memiliki batas pengeluaran.",
+          "setLimit": "Atur batas",
+          "today": "Hari ini",
+          "week": "Minggu",
+          "month": "Bulan",
+          "total": "Total",
+          "freeTier": "Akun gratis: tambahkan kredit di OpenRouter untuk menggunakan model berbayar.",
+          "addCredits": "Tambah kredit"
+        },
+        "pickModel": "Pilih model cloud di bawah untuk mendikte di cloud."
+      },
+      "cloudModels": {
+        "title": "Model Cloud · OpenRouter",
+        "refresh": "Segarkan daftar model",
+        "keyRequired": "Tambahkan kunci API untuk menggunakan transkripsi cloud.",
+        "addKey": "Tambah kunci",
+        "showAll": "Tampilkan semua model cloud ({{total}})",
+        "showFewer": "Tampilkan lebih sedikit",
+        "fetchFailed": "Tidak dapat memuat daftar model: {{error}}"
+      }
     },
     "sound": {
       "title": "Suara",

@@ -353,6 +353,34 @@ impl std::ops::DerefMut for SecretMap {
     }
 }
 
+/// A single secret setting; like [`SecretMap`], it never shows up in logs.
+#[derive(Clone, Default, Serialize, Deserialize, Type)]
+#[serde(transparent)]
+pub(crate) struct SecretString(String);
+
+impl SecretString {
+    pub fn new(value: String) -> Self {
+        Self(value)
+    }
+}
+
+impl fmt::Debug for SecretString {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(if self.0.is_empty() {
+            "\"\""
+        } else {
+            "[REDACTED]"
+        })
+    }
+}
+
+impl std::ops::Deref for SecretString {
+    type Target = str;
+    fn deref(&self) -> &Self::Target {
+        &self.0
+    }
+}
+
 /* still handy for composing the initial JSON in the store ------------- */
 /// The container-level `serde(default)` (backed by the `Default` impl below)
 /// guarantees every field — including ones added in the future — falls back to
@@ -514,6 +542,18 @@ pub struct AppSettings {
     /// `overlay_position` (position `none` → style `None`).
     #[serde(default = "default_overlay_style")]
     pub overlay_style: OverlayStyle,
+    /// OpenRouter model id used by the cloud entry in the model list. Its API
+    /// key is the `openrouter` entry of `post_process_api_keys`.
+    #[serde(default = "default_cloud_transcription_model")]
+    pub cloud_transcription_model: String,
+    /// Optional OpenRouter management key, used only to read the account's
+    /// credit balance: OpenRouter refuses that to inference keys.
+    #[serde(default)]
+    pub openrouter_management_key: SecretString,
+}
+
+fn default_cloud_transcription_model() -> String {
+    crate::cloud_transcription::DEFAULT_CLOUD_MODEL.to_string()
 }
 
 fn default_model() -> String {
@@ -970,6 +1010,8 @@ pub fn get_default_settings() -> AppSettings {
         vad_enabled: default_vad_enabled(),
         vad_backend: VadBackend::default(),
         overlay_style: default_overlay_style(),
+        cloud_transcription_model: default_cloud_transcription_model(),
+        openrouter_management_key: SecretString::default(),
     }
 }
 
@@ -1722,6 +1764,23 @@ mod tests {
         assert!(!debug_output.contains("sk-proj-secret-key-12345"));
         assert!(!debug_output.contains("sk-ant-secret-key-67890"));
         assert!(debug_output.contains("[REDACTED]"));
+    }
+
+    #[test]
+    fn debug_output_redacts_the_management_key() {
+        let mut settings = get_default_settings();
+        settings.openrouter_management_key =
+            SecretString::new("sk-or-v1-management-secret".to_string());
+
+        let debug_output = format!("{:?}", settings);
+        assert!(!debug_output.contains("sk-or-v1-management-secret"));
+        assert!(debug_output.contains("openrouter_management_key: [REDACTED]"));
+
+        let json = serde_json::to_value(&settings).unwrap();
+        assert_eq!(
+            json["openrouter_management_key"],
+            "sk-or-v1-management-secret"
+        );
     }
 
     #[test]

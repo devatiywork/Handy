@@ -2,11 +2,18 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 import { ChevronDown } from "lucide-react";
-import type { ModelInfo } from "@/bindings";
+import { commands, type ModelInfo } from "@/bindings";
 import type { ModelCardStatus } from "./ModelCard";
 import ModelCard, { isLegacySource } from "./ModelCard";
+import CloudModelCard from "./CloudModelCard";
 import HandyTextLogo from "../icons/HandyTextLogo";
 import { useModelStore } from "../../stores/modelStore";
+import { useSettingsStore } from "../../stores/settingsStore";
+import {
+  CLOUD_MODEL_ID,
+  OPENROUTER_PROVIDER_ID,
+  isCloudModel,
+} from "../../lib/utils/cloudModel";
 
 interface OnboardingProps {
   onModelSelected: () => void;
@@ -32,8 +39,21 @@ const Onboarding: React.FC<OnboardingProps> = ({
   const [selectedModelId, setSelectedModelId] = useState<string | null>(null);
   const [showAll, setShowAll] = useState(false);
   const hasStartedSelection = useRef(false);
+  const savedCloudApiKey = useSettingsStore(
+    (state) => state.settings?.post_process_api_keys?.[OPENROUTER_PROVIDER_ID],
+  );
+  const updatePostProcessApiKey = useSettingsStore(
+    (state) => state.updatePostProcessApiKey,
+  );
+  const [isCheckingCloudKey, setIsCheckingCloudKey] = useState(false);
+  const [cloudKeyError, setCloudKeyError] = useState<string | null>(null);
 
-  const isBusy = selectedModelId !== null;
+  const isBusy = selectedModelId !== null || isCheckingCloudKey;
+  // The cloud model is always "available", so it gets its own card with a key
+  // field instead of appearing among the models already on disk.
+  const existingModels = models.filter(
+    (m: ModelInfo) => m.is_downloaded && !isCloudModel(m),
+  );
 
   // Curate the download list: legacy (.bin/ONNX) downloads are deprecated and
   // never shown here (they still appear in the compatible section if already on
@@ -139,6 +159,32 @@ const Onboarding: React.FC<OnboardingProps> = ({
     setSelectedModelId(modelId);
   };
 
+  // Persist the key first: selecting the cloud model loads it, and the load
+  // fails without a key. The selection effect above then finishes onboarding.
+  const handleUseCloud = async (apiKey: string) => {
+    if (preview) return;
+
+    setCloudKeyError(null);
+    setIsCheckingCloudKey(true);
+    try {
+      if (apiKey !== (savedCloudApiKey ?? "")) {
+        await updatePostProcessApiKey(OPENROUTER_PROVIDER_ID, apiKey);
+      }
+      // Catch a key OpenRouter rejects now rather than at the first
+      // dictation. Being unable to reach OpenRouter doesn't block setup.
+      const check = await commands.checkCloudTranscriptionKey();
+      if (check.status === "ok" && check.data.rejected) {
+        setCloudKeyError(t("onboarding.cloud.rejected"));
+        return;
+      }
+    } catch (error) {
+      console.warn("Could not check the OpenRouter key:", error);
+    } finally {
+      setIsCheckingCloudKey(false);
+    }
+    setSelectedModelId(CLOUD_MODEL_ID);
+  };
+
   const getModelStatus = (modelId: string): ModelCardStatus => {
     if (modelId in extractingModels) return "extracting";
     if (modelId in verifyingModels) return "verifying";
@@ -170,25 +216,23 @@ const Onboarding: React.FC<OnboardingProps> = ({
 
       <div className="max-w-[600px] w-full mx-auto text-center flex-1 flex flex-col min-h-0">
         <div className="space-y-6 pb-6">
-          {models.some((m: ModelInfo) => m.is_downloaded) && (
+          {existingModels.length > 0 && (
             <div className="space-y-3">
               <div className="text-left">
                 <h2 className="text-sm font-medium text-text/60">
                   {t("onboarding.existingModelsTitle")}
                 </h2>
               </div>
-              {models
-                .filter((m: ModelInfo) => m.is_downloaded)
-                .map((model: ModelInfo) => (
-                  <ModelCard
-                    key={model.id}
-                    model={model}
-                    status={getExistingModelStatus(model.id)}
-                    disabled={isBusy}
-                    onSelect={handleSelectExistingModel}
-                    showRecommended={false}
-                  />
-                ))}
+              {existingModels.map((model: ModelInfo) => (
+                <ModelCard
+                  key={model.id}
+                  model={model}
+                  status={getExistingModelStatus(model.id)}
+                  disabled={isBusy}
+                  onSelect={handleSelectExistingModel}
+                  showRecommended={false}
+                />
+              ))}
             </div>
           )}
 
@@ -267,6 +311,24 @@ const Onboarding: React.FC<OnboardingProps> = ({
                 ))}
             </div>
           )}
+
+          <div className="space-y-3">
+            <div className="text-left">
+              <h2 className="text-sm font-medium text-text/60">
+                {t("onboarding.cloud.title")}
+              </h2>
+            </div>
+            <CloudModelCard
+              initialApiKey={savedCloudApiKey ?? ""}
+              disabled={isBusy}
+              isSelecting={
+                isCheckingCloudKey || selectedModelId === CLOUD_MODEL_ID
+              }
+              error={cloudKeyError}
+              onUse={(apiKey) => void handleUseCloud(apiKey)}
+              onKeyEdit={() => setCloudKeyError(null)}
+            />
+          </div>
         </div>
       </div>
     </div>

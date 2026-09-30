@@ -22,6 +22,14 @@
     "subtitle": "Kies een transcriptiemodel om aan de slag te gaan",
     "existingModelsTitle": "Compatibele modellen",
     "downloadModelsTitle": "Beschikbaar voor download",
+    "cloud": {
+      "title": "Of transcribeer in de cloud",
+      "description": "Gebruik een spraak-naar-tekstmodel van OpenRouter (standaard openai/gpt-transcribe) zonder iets te downloaden. De audio wordt naar OpenRouter gestuurd en in rekening gebracht op je account.",
+      "apiKeyPlaceholder": "OpenRouter-API-sleutel",
+      "use": "Cloud gebruiken",
+      "getKey": "API-sleutel aanvragen",
+      "rejected": "OpenRouter heeft deze sleutel geweigerd. Controleer hem en probeer het opnieuw."
+    },
     "showAllModels": "Toon alle {{total}} modellen",
     "showFewerModels": "Minder modellen tonen",
     "recommended": "Aanbevolen",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Een groot, trager, maar zeer nauwkeurig meertalig model."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transcribeert in de cloud via OpenRouter. Geen download nodig, maar de audio verlaat je apparaat."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Aangepast",
+    "cloud": "Cloud",
     "legacy": "Klassiek",
     "streaming": "Streaming",
     "active": "Actief",
@@ -227,7 +240,74 @@
         "label": "Opnieuw scannen",
         "tooltip": "Scannen naar modellen die buiten Handy om zijn toegevoegd aan de modellenmap of Hugging Face-cache"
       },
-      "noModelsMatch": "Geen modellen voldoen aan dit filter."
+      "noModelsMatch": "Geen modellen voldoen aan dit filter.",
+      "cloud": {
+        "title": "Cloudtranscriptie",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transcribeer met een spraak-naar-tekstmodel van OpenRouter in plaats van een lokaal model. De audio wordt naar OpenRouter gestuurd en in rekening gebracht op je account.",
+        "status": {
+          "active": "Actief",
+          "off": "Uit",
+          "noKey": "Geen sleutel",
+          "rejected": "Sleutel geweigerd"
+        },
+        "apiKey": {
+          "title": "API-sleutel",
+          "description": "Opgeslagen op dit apparaat. Naverwerking gebruikt hem ook wanneer OpenRouter daar de provider is.",
+          "placeholder": "sk-or-...",
+          "show": "Sleutel tonen",
+          "hide": "Sleutel verbergen",
+          "checking": "Sleutel controleren…",
+          "valid": "Sleutel ‘{{label}}’ is geldig",
+          "validPlain": "Sleutel is geldig",
+          "rejected": "OpenRouter heeft deze sleutel geweigerd",
+          "checkFailed": "Kan de sleutel niet controleren: {{error}}",
+          "recheck": "Opnieuw controleren"
+        },
+        "getKey": "Sleutel aanvragen",
+        "balance": {
+          "title": "Saldo",
+          "refresh": "Saldo verversen",
+          "account": {
+            "title": "Accountsaldo",
+            "summary": "{{credits}} opgewaardeerd · {{spent}} uitgegeven",
+            "needsManagementKey": "OpenRouter toont het accountsaldo alleen aan een beheersleutel (management key).",
+            "addManagementKey": "Beheersleutel toevoegen",
+            "managementKey": "Beheersleutel",
+            "managementKeyHint": "Wordt alleen gebruikt om het saldo op te halen. Een beheersleutel kan API-sleutels aanmaken en verwijderen, dus geef hem een vervaldatum.",
+            "createManagementKey": "Sleutel aanmaken",
+            "managementKeyRejected": "OpenRouter heeft de beheersleutel geweigerd.",
+            "unavailable": "Kan het accountsaldo niet laden: {{error}}"
+          },
+          "key": {
+            "title": "Deze sleutel"
+          },
+          "remaining": "Nog <b>{{remaining}}</b> van {{limit}}",
+          "resets": {
+            "daily": "Wordt dagelijks gereset",
+            "weekly": "Wordt wekelijks gereset",
+            "monthly": "Wordt maandelijks gereset"
+          },
+          "noLimit": "Deze sleutel heeft geen bestedingslimiet.",
+          "setLimit": "Limiet instellen",
+          "today": "Vandaag",
+          "week": "Week",
+          "month": "Maand",
+          "total": "Totaal",
+          "freeTier": "Gratis account: voeg tegoed toe bij OpenRouter om betaalde modellen te gebruiken.",
+          "addCredits": "Tegoed toevoegen"
+        },
+        "pickModel": "Kies hieronder een cloudmodel om in de cloud te dicteren."
+      },
+      "cloudModels": {
+        "title": "Cloudmodellen · OpenRouter",
+        "refresh": "Modellenlijst verversen",
+        "keyRequired": "Voeg een API-sleutel toe om cloudtranscriptie te gebruiken.",
+        "addKey": "Sleutel toevoegen",
+        "showAll": "Alle cloudmodellen tonen ({{total}})",
+        "showFewer": "Minder tonen",
+        "fetchFailed": "Kan de modellenlijst niet laden: {{error}}"
+      }
     },
     "sound": {
       "title": "Geluid",

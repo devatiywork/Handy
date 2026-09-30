@@ -22,6 +22,14 @@
     "subtitle": "Pour commencer, choisissez un modèle de transcription",
     "existingModelsTitle": "Modèles compatibles",
     "downloadModelsTitle": "Disponibles au téléchargement",
+    "cloud": {
+      "title": "Ou transcrivez dans le cloud",
+      "description": "Utilisez un modèle de reconnaissance vocale d'OpenRouter (openai/gpt-transcribe par défaut) sans rien télécharger. L'audio est envoyé à OpenRouter et facturé sur votre compte.",
+      "apiKeyPlaceholder": "Clé API OpenRouter",
+      "use": "Utiliser le cloud",
+      "getKey": "Obtenir une clé API",
+      "rejected": "OpenRouter a refusé cette clé. Vérifiez-la et réessayez."
+    },
     "showAllModels": "Afficher tous les {{total}} modèles",
     "showFewerModels": "Afficher moins de modèles",
     "recommended": "Recommandé",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Un modèle volumineux, plus lent, mais très précis et multilingue."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Transcrit dans le cloud via OpenRouter. Aucun téléchargement nécessaire, mais l'audio quitte votre appareil."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Personnalisé",
+    "cloud": "Cloud",
     "streaming": "Streaming",
     "active": "Actif",
     "switching": "Changement...",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "Réanalyser",
         "tooltip": "Réanalyser pour détecter les modèles ajoutés au dossier des modèles ou au cache Hugging Face en dehors de Handy"
+      },
+      "cloud": {
+        "title": "Transcription dans le cloud",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Transcrivez avec un modèle de reconnaissance vocale d'OpenRouter au lieu d'un modèle local. L'audio est envoyé à OpenRouter et facturé sur votre compte.",
+        "status": {
+          "active": "Active",
+          "off": "Désactivée",
+          "noKey": "Aucune clé",
+          "rejected": "Clé refusée"
+        },
+        "apiKey": {
+          "title": "Clé API",
+          "description": "Stockée sur cet appareil. Le post-traitement l'utilise aussi lorsque OpenRouter est son fournisseur.",
+          "placeholder": "sk-or-...",
+          "show": "Afficher la clé",
+          "hide": "Masquer la clé",
+          "checking": "Vérification de la clé…",
+          "valid": "La clé « {{label}} » est valide",
+          "validPlain": "La clé est valide",
+          "rejected": "OpenRouter a refusé cette clé",
+          "checkFailed": "Impossible de vérifier la clé : {{error}}",
+          "recheck": "Vérifier à nouveau"
+        },
+        "getKey": "Obtenir une clé",
+        "balance": {
+          "title": "Solde",
+          "refresh": "Actualiser le solde",
+          "account": {
+            "title": "Solde du compte",
+            "summary": "{{credits}} crédités · {{spent}} dépensés",
+            "needsManagementKey": "OpenRouter n'affiche le solde du compte qu'à une clé de gestion (management key).",
+            "addManagementKey": "Ajouter une clé de gestion",
+            "managementKey": "Clé de gestion",
+            "managementKeyHint": "Sert uniquement à lire le solde. Une clé de gestion peut créer et supprimer des clés API : donnez-lui une date d'expiration.",
+            "createManagementKey": "Créer une clé",
+            "managementKeyRejected": "OpenRouter a refusé la clé de gestion.",
+            "unavailable": "Impossible de charger le solde du compte : {{error}}"
+          },
+          "key": {
+            "title": "Cette clé"
+          },
+          "remaining": "<b>{{remaining}}</b> restants sur {{limit}}",
+          "resets": {
+            "daily": "Réinitialisé chaque jour",
+            "weekly": "Réinitialisé chaque semaine",
+            "monthly": "Réinitialisé chaque mois"
+          },
+          "noLimit": "Cette clé n'a pas de limite de dépenses.",
+          "setLimit": "Définir une limite",
+          "today": "Aujourd'hui",
+          "week": "Semaine",
+          "month": "Mois",
+          "total": "Total",
+          "freeTier": "Compte gratuit : ajoutez des crédits sur OpenRouter pour utiliser les modèles payants.",
+          "addCredits": "Ajouter des crédits"
+        },
+        "pickModel": "Choisissez un modèle cloud ci-dessous pour dicter dans le cloud."
+      },
+      "cloudModels": {
+        "title": "Modèles cloud · OpenRouter",
+        "refresh": "Actualiser la liste des modèles",
+        "keyRequired": "Ajoutez une clé API pour utiliser la transcription dans le cloud.",
+        "addKey": "Ajouter une clé",
+        "showAll": "Afficher tous les modèles cloud ({{total}})",
+        "showFewer": "Afficher moins",
+        "fetchFailed": "Impossible de charger la liste des modèles : {{error}}"
       }
     },
     "general": {

@@ -716,6 +716,46 @@ async rescanLocalModels() : Promise<Result<null, string>> {
     else return { status: "error", error: e  as any };
 }
 },
+async changeCloudTranscriptionModelSetting(model: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_cloud_transcription_model_setting", { model }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+async fetchCloudTranscriptionModels() : Promise<Result<CloudModelOption[], string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("fetch_cloud_transcription_models") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Check the saved OpenRouter key and read its spending, its limit and the
+ * account balance.
+ */
+async checkCloudTranscriptionKey() : Promise<Result<CloudKeyCheck, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("check_cloud_transcription_key") };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
+/**
+ * Store (or, with an empty string, clear) the OpenRouter management key that
+ * reads the account balance.
+ */
+async changeOpenrouterManagementKeySetting(key: string) : Promise<Result<null, string>> {
+    try {
+    return { status: "ok", data: await TAURI_INVOKE("change_openrouter_management_key_setting", { key }) };
+} catch (e) {
+    if(e instanceof Error) throw e;
+    else return { status: "error", error: e  as any };
+}
+},
 async updateMicrophoneMode(alwaysOn: boolean) : Promise<Result<null, string>> {
     try {
     return { status: "ok", data: await TAURI_INVOKE("update_microphone_mode", { alwaysOn }) };
@@ -909,7 +949,7 @@ async updateRecordingRetentionPeriod(period: string) : Promise<Result<null, stri
 },
 /**
  * Checks if the Mac is a laptop by detecting battery presence
- * 
+ *
  * This uses pmset to check for battery information.
  * Returns true if a battery is detected (laptop), false otherwise (desktop)
  */
@@ -1004,12 +1044,80 @@ vad_backend?: VadBackend;
  * not gated on this — that follows model capability. Migrated from the old
  * `overlay_position` (position `none` → style `None`).
  */
-overlay_style?: OverlayStyle }
+overlay_style?: OverlayStyle; 
+/**
+ * OpenRouter model id used by the cloud entry in the model list. Its API
+ * key is the `openrouter` entry of `post_process_api_keys`.
+ */
+cloud_transcription_model?: string; 
+/**
+ * Optional OpenRouter management key, used only to read the account's
+ * credit balance: OpenRouter refuses that to inference keys.
+ */
+openrouter_management_key?: SecretString }
 export type AudioDevice = { index: string; name: string; is_default: boolean }
 export type AutoSubmitKey = "enter" | "ctrl_enter" | "cmd_enter"
 export type AvailableAccelerators = { transcribe: string[]; ort: string[]; gpu_devices: GpuDeviceOption[] }
 export type BindingResponse = { success: boolean; binding: ShortcutBinding | null; error: string | null }
 export type ClipboardHandling = "dont_modify" | "copy_to_clipboard"
+/**
+ * The account's credit balance (`GET /credits`). OpenRouter documents that
+ * endpoint as management-key only, so an inference key is tried first and
+ * the optional management key after it.
+ */
+export type CloudAccountStatus = 
+/**
+ * USD credits bought and spent across the whole account.
+ */
+{ status: "available"; total_credits: number; total_usage: number } | 
+/**
+ * Neither configured key may read the balance.
+ */
+{ status: "needs_management_key" } | 
+/**
+ * OpenRouter refused the configured management key.
+ */
+{ status: "management_key_rejected"; message: string } | 
+/**
+ * The balance could not be read (network or server error).
+ */
+{ status: "unavailable"; message: string }
+/**
+ * Outcome of checking the configured key. A rejection (401/403) is a verdict
+ * on the key, so it is reported here; failing to reach OpenRouter is an error.
+ */
+export type CloudKeyCheck = { 
+/**
+ * Present when OpenRouter accepted the key.
+ */
+info: CloudKeyInfo | null; 
+/**
+ * OpenRouter's explanation when it rejected the key.
+ */
+rejected: string | null; 
+/**
+ * The whole account's credit balance, as far as the keys can read it.
+ */
+account: CloudAccountStatus }
+/**
+ * What OpenRouter reports about the configured key. Amounts are USD credits
+ * spent through this key; `limit` and `limit_remaining` are `None` when the
+ * key has no spending limit. The account's overall balance is only available
+ * to management keys, so it is not part of this.
+ */
+export type CloudKeyInfo = { label: string; usage: number; usage_daily: number; usage_weekly: number; usage_monthly: number; limit: number | null; limit_remaining: number | null; 
+/**
+ * How often the limit resets: "daily", "weekly" or "monthly".
+ */
+limit_reset: string | null; is_free_tier: boolean }
+/**
+ * One speech-to-text model offered through OpenRouter.
+ */
+export type CloudModelOption = { id: string; name: string; 
+/**
+ * OpenRouter's (English) description of the model; may be empty.
+ */
+description: string }
 export type CustomSounds = { start: boolean; stop: boolean }
 export type EngineType = 
 /**
@@ -1017,7 +1125,11 @@ export type EngineType =
  * Voxtral, Qwen3-ASR, Nemotron, …). The architecture is auto-detected from
  * the file, so this one variant covers the whole transcribe-cpp family.
  */
-"TranscribeCpp" | "Parakeet" | "Moonshine" | "MoonshineStreaming" | "SenseVoice" | "GigaAM" | "Canary" | "Cohere"
+"TranscribeCpp" | "Parakeet" | "Moonshine" | "MoonshineStreaming" | "SenseVoice" | "GigaAM" | "Canary" | "Cohere" | 
+/**
+ * Remote speech-to-text through OpenRouter; see `cloud_transcription`.
+ */
+"OpenRouter"
 export type GpuDeviceOption = { id: string; name: string; total_vram_mb: number }
 export type HistoryEntry = { id: number; file_name: string; timestamp: number; saved: boolean; title: string; transcription_text: string; post_processed_text: string | null; post_process_prompt: string | null; post_process_requested: boolean }
 export type HistoryUpdatePayload = { action: "added"; entry: HistoryEntry } | { action: "updated"; entry: HistoryEntry } | { action: "deleted"; id: number } | { action: "toggled"; id: number }
@@ -1062,7 +1174,11 @@ sha256: string | null } } |
  * Already present on disk — a user-provided custom model, or one discovered
  * in a shared cache. Nothing to download.
  */
-"Local"
+"Local" | 
+/**
+ * Runs on a remote service. Nothing on disk; usable once its API key is set.
+ */
+"Cloud"
 export type ModelUnloadTimeout = "never" | "immediately" | "min_2" | "min_5" | "min_10" | "min_15" | "hour_1" | "sec_15"
 export type OrtAcceleratorSetting = "auto" | "cpu" | "cuda" | "directml" | "rocm"
 export type OverlayPosition = "top" | "bottom"
@@ -1079,6 +1195,10 @@ export type PermissionAccess = "allowed" | "denied" | "unknown"
 export type PostProcessProvider = { id: string; label: string; base_url: string; allow_base_url_edit?: boolean; models_endpoint?: string | null; supports_structured_output?: boolean }
 export type RecordingRetentionPeriod = "never" | "preserve_limit" | "days_3" | "weeks_2" | "months_3"
 export type SecretMap = Partial<{ [key in string]: string }>
+/**
+ * A single secret setting; like [`SecretMap`], it never shows up in logs.
+ */
+export type SecretString = string
 export type SecureInputStatus = { 
 /**
  * Secure input is currently enabled (live check)

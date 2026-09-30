@@ -11,13 +11,29 @@ import {
 } from "lucide-react";
 import type { ModelCardStatus } from "@/components/onboarding";
 import { ModelCard } from "@/components/onboarding";
+import { Button } from "@/components/ui/Button";
 import { useModelStore } from "@/stores/modelStore";
+import { useSettings } from "@/hooks/useSettings";
+import { useCloudModels } from "@/hooks/useCloudModels";
 import {
   getLanguageLabel,
   MODEL_CAPABILITY_LANGUAGES,
   supportsLanguageCode,
 } from "@/lib/constants/languages.ts";
+import {
+  CLOUD_MODEL_ID,
+  DEFAULT_CLOUD_MODEL,
+  DEFAULT_CLOUD_MODEL_NAME,
+  OPENROUTER_PROVIDER_ID,
+  cloudCardModelId,
+  cloudModelCard,
+  isCloudModel,
+} from "@/lib/utils/cloudModel";
 import type { ModelInfo } from "@/bindings";
+import { CloudTranscriptionSettings } from "./CloudTranscriptionSettings";
+
+/** Cloud cards shown before "Show all": the active one, the default, then A–Z. */
+const CLOUD_PREVIEW_COUNT = 4;
 
 // check if model supports a language based on its supported_languages list
 const modelSupportsLanguage = (model: ModelInfo, langCode: string): boolean => {
@@ -57,6 +73,25 @@ export const ModelsSettings: React.FC = () => {
     deleteModel,
     rescanLocalModels,
   } = useModelStore();
+
+  // OpenRouter models are listed as cards too; all of them run through the
+  // single cloud registry entry, with the remote model kept in settings.
+  const { settings, updateSetting } = useSettings();
+  const [cloudExpanded, setCloudExpanded] = useState(false);
+  const [showAllCloud, setShowAllCloud] = useState(false);
+  const cloudEntry = models.find(isCloudModel);
+  const cloudActive = currentModel === CLOUD_MODEL_ID;
+  const cloudModel = settings?.cloud_transcription_model || DEFAULT_CLOUD_MODEL;
+  const hasCloudKey =
+    (settings?.post_process_api_keys?.[OPENROUTER_PROVIDER_ID] ?? "").trim() !==
+    "";
+  const cloudListEnabled = hasCloudKey || cloudActive || cloudExpanded;
+  const {
+    models: remoteModels,
+    isFetching: isFetchingCloudModels,
+    error: cloudModelsError,
+    refresh: refreshCloudModels,
+  } = useCloudModels(cloudListEnabled);
 
   // click outside handler for language dropdown
   useEffect(() => {
@@ -181,6 +216,8 @@ export const ModelsSettings: React.FC = () => {
     return models.filter((model: ModelInfo) => {
       // Hide deprecated legacy (.bin/ONNX) downloads unless already on disk.
       if (isLegacyModel(model) && !model.is_downloaded) return false;
+      // The cloud entry is shown as per-model cards in its own section.
+      if (isCloudModel(model)) return false;
       if (languageFilter !== "all") {
         if (!modelSupportsLanguage(model, languageFilter)) return false;
       }
@@ -194,6 +231,63 @@ export const ModelsSettings: React.FC = () => {
       return true;
     });
   }, [models, languageFilter, filterStreaming, filterTranslation, searchQuery]);
+
+  const cloudCards = useMemo(() => {
+    if (!cloudEntry) return [];
+    const options = [...remoteModels];
+    // Offline or before the list loads, still show the configured model.
+    if (!options.some((option) => option.id === cloudModel)) {
+      const name =
+        cloudModel === DEFAULT_CLOUD_MODEL
+          ? DEFAULT_CLOUD_MODEL_NAME
+          : cloudModel;
+      options.push({ id: cloudModel, name, description: "" });
+    }
+    const rank = (id: string) =>
+      id === cloudModel ? 0 : id === DEFAULT_CLOUD_MODEL ? 1 : 2;
+    options.sort(
+      (a, b) => rank(a.id) - rank(b.id) || a.name.localeCompare(b.name),
+    );
+    const fallbackDescription = t(
+      "onboarding.models.openrouter-cloud.description",
+    );
+    return options.map((option) =>
+      cloudModelCard(option, cloudEntry, fallbackDescription),
+    );
+  }, [cloudEntry, remoteModels, cloudModel, t]);
+
+  const shownCloudCards = showAllCloud
+    ? cloudCards
+    : cloudCards.slice(0, CLOUD_PREVIEW_COUNT);
+
+  const getCloudCardStatus = (card: ModelInfo): ModelCardStatus => {
+    if (switchingModelId === card.id) return "switching";
+    if (cloudActive && card.filename === cloudModel) return "active";
+    return "available";
+  };
+
+  // Picking a cloud card stores its remote model and, unless the cloud entry
+  // is already the active model, switches to it.
+  const handleCloudSelect = async (cardId: string) => {
+    const remoteId = cloudCardModelId(cardId);
+    if (!remoteId) return;
+    setSwitchingModelId(cardId);
+    try {
+      if (remoteId !== cloudModel) {
+        await updateSetting("cloud_transcription_model", remoteId);
+      }
+      if (!cloudActive) {
+        await selectModel(CLOUD_MODEL_ID);
+      }
+    } finally {
+      setSwitchingModelId(null);
+    }
+  };
+
+  const focusCloudKey = () => {
+    setCloudExpanded(true);
+    setTimeout(() => document.getElementById("openrouter-api-key")?.focus(), 0);
+  };
 
   // Split filtered models into downloaded (including custom) and available sections
   const { downloadedModels, availableModels } = useMemo(() => {
@@ -247,6 +341,87 @@ export const ModelsSettings: React.FC = () => {
           {t("settings.models.description")}
         </p>
       </div>
+
+      <CloudTranscriptionSettings
+        expanded={cloudExpanded}
+        onExpandedChange={setCloudExpanded}
+      />
+
+      {/* Cloud Models Section — OpenRouter models, picked like local ones.
+          Listed before the local catalog, which the search below filters. */}
+      {cloudCards.length > 0 && (
+        <div className="space-y-3 pb-2">
+          <div className="flex items-center justify-between">
+            <h2 className="text-sm font-medium text-text/60">
+              {t("settings.models.cloudModels.title")}
+            </h2>
+            {cloudListEnabled && (
+              <button
+                type="button"
+                onClick={() => void refreshCloudModels()}
+                disabled={isFetchingCloudModels}
+                title={t("settings.models.cloudModels.refresh")}
+                aria-label={t("settings.models.cloudModels.refresh")}
+                className="flex items-center justify-center w-8 h-8 text-sm font-medium rounded-lg bg-mid-gray/10 text-text/60 hover:bg-mid-gray/20 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <RefreshCw
+                  className={`w-3.5 h-3.5 ${isFetchingCloudModels ? "animate-spin" : ""}`}
+                />
+              </button>
+            )}
+          </div>
+          {!hasCloudKey && (
+            <div className="flex items-center justify-between gap-3 rounded-lg border border-dashed border-mid-gray/40 px-4 py-2.5">
+              <p className="text-xs text-text/60">
+                {t("settings.models.cloudModels.keyRequired")}
+              </p>
+              <Button
+                variant="secondary"
+                size="sm"
+                onClick={focusCloudKey}
+                className="shrink-0"
+              >
+                {t("settings.models.cloudModels.addKey")}
+              </Button>
+            </div>
+          )}
+          {cloudModelsError && (
+            <p className="text-xs text-error">
+              {t("settings.models.cloudModels.fetchFailed", {
+                error: cloudModelsError,
+              })}
+            </p>
+          )}
+          {shownCloudCards.map((card: ModelInfo) => (
+            <ModelCard
+              key={card.id}
+              model={card}
+              status={getCloudCardStatus(card)}
+              disabled={!hasCloudKey}
+              onSelect={(cardId) => void handleCloudSelect(cardId)}
+              showRecommended={true}
+            />
+          ))}
+          {cloudCards.length > CLOUD_PREVIEW_COUNT && (
+            <button
+              type="button"
+              onClick={() => setShowAllCloud((shown) => !shown)}
+              className="flex items-center justify-center gap-1.5 mx-auto py-1 text-sm font-medium text-text/60 hover:text-text transition-colors"
+            >
+              {showAllCloud
+                ? t("settings.models.cloudModels.showFewer")
+                : t("settings.models.cloudModels.showAll", {
+                    total: cloudCards.length,
+                  })}
+              <ChevronDown
+                className={`w-4 h-4 transition-transform ${
+                  showAllCloud ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Search bar — filter the catalog by name or description */}
       <div className="relative">

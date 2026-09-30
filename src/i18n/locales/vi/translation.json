@@ -22,6 +22,14 @@
     "subtitle": "Để bắt đầu, hãy chọn một mô hình chuyển đổi giọng nói",
     "existingModelsTitle": "Mô hình tương thích",
     "downloadModelsTitle": "Có sẵn để tải xuống",
+    "cloud": {
+      "title": "Hoặc chuyển đổi trên đám mây",
+      "description": "Dùng mô hình chuyển giọng nói thành văn bản của OpenRouter (mặc định là openai/gpt-transcribe) mà không cần tải gì xuống. Âm thanh được gửi đến OpenRouter và tính phí vào tài khoản của bạn.",
+      "apiKeyPlaceholder": "Khóa API OpenRouter",
+      "use": "Dùng đám mây",
+      "getKey": "Lấy khóa API",
+      "rejected": "OpenRouter đã từ chối khóa này. Hãy kiểm tra và thử lại."
+    },
     "showAllModels": "Hiển thị tất cả {{total}} mô hình",
     "showFewerModels": "Hiển thị ít mô hình hơn",
     "recommended": "Đề xuất",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Mô hình lớn, chậm hơn, nhưng rất chính xác và đa ngôn ngữ."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "Chuyển giọng nói thành văn bản trên đám mây qua OpenRouter. Không cần tải xuống, nhưng âm thanh sẽ rời khỏi thiết bị của bạn."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Tùy chỉnh",
+    "cloud": "Đám mây",
     "streaming": "Truyền trực tiếp",
     "active": "Đang hoạt động",
     "switching": "Đang chuyển...",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "Quét lại",
         "tooltip": "Quét lại các mô hình được thêm vào thư mục mô hình hoặc bộ nhớ đệm Hugging Face bên ngoài Handy"
+      },
+      "cloud": {
+        "title": "Chuyển đổi trên đám mây",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Chuyển giọng nói thành văn bản bằng mô hình của OpenRouter thay vì mô hình cục bộ. Âm thanh được gửi đến OpenRouter và tính phí vào tài khoản của bạn.",
+        "status": {
+          "active": "Đang bật",
+          "off": "Tắt",
+          "noKey": "Chưa có khóa",
+          "rejected": "Khóa bị từ chối"
+        },
+        "apiKey": {
+          "title": "Khóa API",
+          "description": "Được lưu trên thiết bị này. Xử lý sau cũng dùng khóa này khi chọn OpenRouter làm nhà cung cấp.",
+          "placeholder": "sk-or-...",
+          "show": "Hiện khóa",
+          "hide": "Ẩn khóa",
+          "checking": "Đang kiểm tra khóa…",
+          "valid": "Khóa “{{label}}” hợp lệ",
+          "validPlain": "Khóa hợp lệ",
+          "rejected": "OpenRouter đã từ chối khóa này",
+          "checkFailed": "Không thể kiểm tra khóa: {{error}}",
+          "recheck": "Kiểm tra lại"
+        },
+        "getKey": "Lấy khóa",
+        "balance": {
+          "title": "Số dư",
+          "refresh": "Làm mới số dư",
+          "account": {
+            "title": "Số dư tài khoản",
+            "summary": "Đã nạp {{credits}} · đã dùng {{spent}}",
+            "needsManagementKey": "OpenRouter chỉ hiển thị số dư tài khoản cho khóa quản lý (management key).",
+            "addManagementKey": "Thêm khóa quản lý",
+            "managementKey": "Khóa quản lý",
+            "managementKeyHint": "Chỉ dùng để đọc số dư. Khóa quản lý có thể tạo và xóa khóa API, vì vậy hãy đặt ngày hết hạn cho nó.",
+            "createManagementKey": "Tạo khóa",
+            "managementKeyRejected": "OpenRouter đã từ chối khóa quản lý.",
+            "unavailable": "Không thể tải số dư tài khoản: {{error}}"
+          },
+          "key": {
+            "title": "Khóa này"
+          },
+          "remaining": "Còn <b>{{remaining}}</b> / {{limit}}",
+          "resets": {
+            "daily": "Đặt lại hằng ngày",
+            "weekly": "Đặt lại hằng tuần",
+            "monthly": "Đặt lại hằng tháng"
+          },
+          "noLimit": "Khóa này không có giới hạn chi tiêu.",
+          "setLimit": "Đặt giới hạn",
+          "today": "Hôm nay",
+          "week": "Tuần",
+          "month": "Tháng",
+          "total": "Tổng",
+          "freeTier": "Tài khoản miễn phí: nạp tín dụng trên OpenRouter để dùng các mô hình trả phí.",
+          "addCredits": "Nạp tín dụng"
+        },
+        "pickModel": "Chọn một mô hình đám mây bên dưới để đọc chính tả trên đám mây."
+      },
+      "cloudModels": {
+        "title": "Mô hình đám mây · OpenRouter",
+        "refresh": "Làm mới danh sách mô hình",
+        "keyRequired": "Thêm khóa API để dùng chuyển đổi trên đám mây.",
+        "addKey": "Thêm khóa",
+        "showAll": "Hiện tất cả mô hình đám mây ({{total}})",
+        "showFewer": "Thu gọn",
+        "fetchFailed": "Không thể tải danh sách mô hình: {{error}}"
       }
     },
     "general": {

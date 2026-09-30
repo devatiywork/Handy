@@ -22,6 +22,14 @@
     "subtitle": "Başlamak için bir transkripsiyon modeli seçin",
     "existingModelsTitle": "Uyumlu Modeller",
     "downloadModelsTitle": "İndirilebilir",
+    "cloud": {
+      "title": "Ya da bulutta yazıya dökün",
+      "description": "Hiçbir şey indirmeden OpenRouter'ın bir konuşmadan metne modelini (varsayılan olarak openai/gpt-transcribe) kullanın. Ses OpenRouter'a gönderilir ve hesabınıza faturalandırılır.",
+      "apiKeyPlaceholder": "OpenRouter API anahtarı",
+      "use": "Bulutu kullan",
+      "getKey": "API anahtarı alın",
+      "rejected": "OpenRouter bu anahtarı reddetti. Kontrol edip yeniden deneyin."
+    },
     "showAllModels": "{{total}} modelin tümünü göster",
     "showFewerModels": "Daha az model göster",
     "recommended": "Önerilen",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "Büyük, daha yavaş, ancak çok doğru çok dilli bir model."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "OpenRouter üzerinden bulutta yazıya döker. İndirme gerekmez, ancak ses cihazınızdan çıkar."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "Özel",
+    "cloud": "Bulut",
     "streaming": "Akış",
     "active": "Aktif",
     "noModelsAvailable": "Kullanılabilir model yok",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "Yeniden Tara",
         "tooltip": "Handy dışında modeller klasörüne veya Hugging Face önbelleğine eklenen modelleri yeniden tara"
+      },
+      "cloud": {
+        "title": "Bulut Transkripsiyonu",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "Yerel bir model yerine OpenRouter'ın bir konuşmadan metne modeliyle yazıya dökün. Ses OpenRouter'a gönderilir ve hesabınıza faturalandırılır.",
+        "status": {
+          "active": "Etkin",
+          "off": "Kapalı",
+          "noKey": "Anahtar yok",
+          "rejected": "Anahtar reddedildi"
+        },
+        "apiKey": {
+          "title": "API Anahtarı",
+          "description": "Bu cihazda saklanır. Son işlemde sağlayıcı olarak OpenRouter seçiliyse orada da kullanılır.",
+          "placeholder": "sk-or-...",
+          "show": "Anahtarı göster",
+          "hide": "Anahtarı gizle",
+          "checking": "Anahtar kontrol ediliyor…",
+          "valid": "“{{label}}” anahtarı geçerli",
+          "validPlain": "Anahtar geçerli",
+          "rejected": "OpenRouter bu anahtarı reddetti",
+          "checkFailed": "Anahtar kontrol edilemedi: {{error}}",
+          "recheck": "Yeniden kontrol et"
+        },
+        "getKey": "Anahtar alın",
+        "balance": {
+          "title": "Bakiye",
+          "refresh": "Bakiyeyi yenile",
+          "account": {
+            "title": "Hesap bakiyesi",
+            "summary": "{{credits}} yüklendi · {{spent}} harcandı",
+            "needsManagementKey": "OpenRouter hesap bakiyesini yalnızca yönetim anahtarına (management key) gösterir.",
+            "addManagementKey": "Yönetim anahtarı ekle",
+            "managementKey": "Yönetim anahtarı",
+            "managementKeyHint": "Yalnızca bakiyeyi okumak için kullanılır. Yönetim anahtarı API anahtarları oluşturup silebilir, bu yüzden bir son kullanma tarihi belirleyin.",
+            "createManagementKey": "Anahtar oluştur",
+            "managementKeyRejected": "OpenRouter yönetim anahtarını reddetti.",
+            "unavailable": "Hesap bakiyesi yüklenemedi: {{error}}"
+          },
+          "key": {
+            "title": "Bu anahtar"
+          },
+          "remaining": "{{limit}} tutarından <b>{{remaining}}</b> kaldı",
+          "resets": {
+            "daily": "Her gün sıfırlanır",
+            "weekly": "Her hafta sıfırlanır",
+            "monthly": "Her ay sıfırlanır"
+          },
+          "noLimit": "Bu anahtarın harcama limiti yok.",
+          "setLimit": "Limit belirle",
+          "today": "Bugün",
+          "week": "Hafta",
+          "month": "Ay",
+          "total": "Toplam",
+          "freeTier": "Ücretsiz hesap: ücretli modelleri kullanmak için OpenRouter'da kredi yükleyin.",
+          "addCredits": "Kredi yükle"
+        },
+        "pickModel": "Bulutta dikte etmek için aşağıdan bir bulut modeli seçin."
+      },
+      "cloudModels": {
+        "title": "Bulut Modelleri · OpenRouter",
+        "refresh": "Model listesini yenile",
+        "keyRequired": "Bulut transkripsiyonunu kullanmak için bir API anahtarı ekleyin.",
+        "addKey": "Anahtar ekle",
+        "showAll": "Tüm bulut modellerini göster ({{total}})",
+        "showFewer": "Daha az göster",
+        "fetchFailed": "Model listesi yüklenemedi: {{error}}"
       }
     },
     "general": {

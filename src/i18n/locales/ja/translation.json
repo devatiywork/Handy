@@ -22,6 +22,14 @@
     "subtitle": "開始するには、文字起こしのモデルを選択してください",
     "existingModelsTitle": "互換性のあるモデル",
     "downloadModelsTitle": "ダウンロード可能",
+    "cloud": {
+      "title": "またはクラウドで文字起こし",
+      "description": "何もダウンロードせずに OpenRouter の音声認識モデル（既定は openai/gpt-transcribe）を使用します。音声は OpenRouter に送信され、料金はお使いのアカウントに請求されます。",
+      "apiKeyPlaceholder": "OpenRouter の API キー",
+      "use": "クラウドを使用",
+      "getKey": "API キーを取得",
+      "rejected": "OpenRouter がこのキーを拒否しました。キーを確認して、もう一度お試しください。"
+    },
     "showAllModels": "すべての{{total}}個のモデルを表示",
     "showFewerModels": "表示を減らす",
     "recommended": "おすすめ",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "大型で低速ですが、非常に高精度な多言語モデル。"
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "OpenRouter 経由でクラウド上で文字起こしします。ダウンロードは不要ですが、音声はデバイスの外に送信されます。"
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "カスタム",
+    "cloud": "クラウド",
     "streaming": "ストリーミング",
     "active": "アクティブ",
     "switching": "切替中…",
@@ -176,6 +189,73 @@
       "rescan": {
         "label": "再スキャン",
         "tooltip": "Handy を使わずに models フォルダーまたは Hugging Face キャッシュに追加されたモデルを再スキャンします"
+      },
+      "cloud": {
+        "title": "クラウド文字起こし",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "ローカルモデルの代わりに OpenRouter の音声認識モデルで文字起こしします。音声は OpenRouter に送信され、料金はお使いのアカウントに請求されます。",
+        "status": {
+          "active": "有効",
+          "off": "オフ",
+          "noKey": "キーなし",
+          "rejected": "キーが拒否されました"
+        },
+        "apiKey": {
+          "title": "API キー",
+          "description": "このデバイスに保存されます。後処理のプロバイダーに OpenRouter を選択している場合は、後処理でも使用されます。",
+          "placeholder": "sk-or-...",
+          "show": "キーを表示",
+          "hide": "キーを隠す",
+          "checking": "キーを確認しています…",
+          "valid": "キー「{{label}}」は有効です",
+          "validPlain": "キーは有効です",
+          "rejected": "OpenRouter がこのキーを拒否しました",
+          "checkFailed": "キーを確認できませんでした: {{error}}",
+          "recheck": "再確認"
+        },
+        "getKey": "キーを取得",
+        "balance": {
+          "title": "残高",
+          "refresh": "残高を更新",
+          "account": {
+            "title": "アカウント残高",
+            "summary": "チャージ {{credits}} · 使用 {{spent}}",
+            "needsManagementKey": "OpenRouter はアカウント残高を管理キー (management key) にのみ公開しています。",
+            "addManagementKey": "管理キーを追加",
+            "managementKey": "管理キー",
+            "managementKeyHint": "残高の取得にのみ使います。管理キーは API キーを作成・削除できるため、有効期限を設定してください。",
+            "createManagementKey": "キーを作成",
+            "managementKeyRejected": "OpenRouter が管理キーを拒否しました。",
+            "unavailable": "アカウント残高を読み込めませんでした: {{error}}"
+          },
+          "key": {
+            "title": "このキー"
+          },
+          "remaining": "{{limit}} 中 残り <b>{{remaining}}</b>",
+          "resets": {
+            "daily": "毎日リセット",
+            "weekly": "毎週リセット",
+            "monthly": "毎月リセット"
+          },
+          "noLimit": "このキーには利用上限が設定されていません。",
+          "setLimit": "上限を設定",
+          "today": "今日",
+          "week": "今週",
+          "month": "今月",
+          "total": "累計",
+          "freeTier": "無料アカウント: 有料モデルを使うには OpenRouter でクレジットを追加してください。",
+          "addCredits": "クレジットを追加"
+        },
+        "pickModel": "下のクラウドモデルを選ぶと、ディクテーションがクラウドに切り替わります。"
+      },
+      "cloudModels": {
+        "title": "クラウドモデル · OpenRouter",
+        "refresh": "モデル一覧を更新",
+        "keyRequired": "クラウド文字起こしを使うには API キーを追加してください。",
+        "addKey": "キーを追加",
+        "showAll": "すべてのクラウドモデルを表示 ({{total}})",
+        "showFewer": "表示を減らす",
+        "fetchFailed": "モデル一覧を読み込めませんでした: {{error}}"
       }
     },
     "general": {

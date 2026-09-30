@@ -22,6 +22,14 @@
     "subtitle": "כדי להתחיל, בחר מודל תמלול",
     "existingModelsTitle": "מודלים תואמים",
     "downloadModelsTitle": "זמינים להורדה",
+    "cloud": {
+      "title": "או תמלל בענן",
+      "description": "השתמש במודל המרת דיבור לטקסט של OpenRouter (כברירת מחדל openai/gpt-transcribe) בלי להוריד דבר. האודיו נשלח ל-OpenRouter והחיוב נעשה בחשבון שלך.",
+      "apiKeyPlaceholder": "מפתח API של OpenRouter",
+      "use": "השתמש בענן",
+      "getKey": "קבל מפתח API",
+      "rejected": "OpenRouter דחה את המפתח הזה. בדוק אותו ונסה שוב."
+    },
     "showAllModels": "הצג את כל {{total}} המודלים",
     "showFewerModels": "הצג פחות מודלים",
     "recommended": "מומלץ",
@@ -94,6 +102,10 @@
       "cohere-int8": {
         "name": "Cohere",
         "description": "מודל גדול, איטי יותר, אך מדויק מאוד ורב-לשוני."
+      },
+      "openrouter-cloud": {
+        "name": "OpenRouter Cloud",
+        "description": "מתמלל בענן דרך OpenRouter. אין צורך בהורדה, אבל האודיו יוצא מהמכשיר שלך."
       }
     },
     "errors": {
@@ -122,6 +134,7 @@
   },
   "modelSelector": {
     "custom": "מותאם אישית",
+    "cloud": "ענן",
     "streaming": "סטרימינג",
     "active": "פעיל",
     "switching": "מחליף...",
@@ -227,6 +240,73 @@
       "rescan": {
         "label": "סריקה מחדש",
         "tooltip": "סריקה מחדש לאיתור מודלים שנוספו לתיקיית המודלים או למטמון של Hugging Face מחוץ ל-Handy"
+      },
+      "cloud": {
+        "title": "תמלול בענן",
+        "subtitle": "OpenRouter · {{model}}",
+        "description": "תמלל עם מודל המרת דיבור לטקסט של OpenRouter במקום מודל מקומי. האודיו נשלח ל-OpenRouter והחיוב נעשה בחשבון שלך.",
+        "status": {
+          "active": "פעיל",
+          "off": "כבוי",
+          "noKey": "אין מפתח",
+          "rejected": "המפתח נדחה"
+        },
+        "apiKey": {
+          "title": "מפתח API",
+          "description": "נשמר במכשיר זה. העיבוד המשלים משתמש בו גם כאשר OpenRouter נבחר בו כספק.",
+          "placeholder": "sk-or-...",
+          "show": "הצג מפתח",
+          "hide": "הסתר מפתח",
+          "checking": "בודק את המפתח…",
+          "valid": "המפתח {{label}} תקף",
+          "validPlain": "המפתח תקף",
+          "rejected": "OpenRouter דחה את המפתח הזה",
+          "checkFailed": "לא ניתן לבדוק את המפתח: {{error}}",
+          "recheck": "בדוק שוב"
+        },
+        "getKey": "קבל מפתח",
+        "balance": {
+          "title": "יתרה",
+          "refresh": "רענן יתרה",
+          "account": {
+            "title": "יתרת החשבון",
+            "summary": "נטענו {{credits}} · נוצלו {{spent}}",
+            "needsManagementKey": "OpenRouter מציג את יתרת החשבון רק למפתח ניהול (management key).",
+            "addManagementKey": "הוסף מפתח ניהול",
+            "managementKey": "מפתח ניהול",
+            "managementKeyHint": "משמש רק לקריאת היתרה. מפתח ניהול יכול ליצור ולמחוק מפתחות API, לכן הגדר לו תאריך תפוגה.",
+            "createManagementKey": "צור מפתח",
+            "managementKeyRejected": "OpenRouter דחה את מפתח הניהול.",
+            "unavailable": "לא ניתן לטעון את יתרת החשבון: {{error}}"
+          },
+          "key": {
+            "title": "המפתח הזה"
+          },
+          "remaining": "נותרו <b>{{remaining}}</b> מתוך {{limit}}",
+          "resets": {
+            "daily": "מתאפס מדי יום",
+            "weekly": "מתאפס מדי שבוע",
+            "monthly": "מתאפס מדי חודש"
+          },
+          "noLimit": "למפתח הזה אין מגבלת הוצאה.",
+          "setLimit": "הגדר מגבלה",
+          "today": "היום",
+          "week": "שבוע",
+          "month": "חודש",
+          "total": "סה״כ",
+          "freeTier": "חשבון חינמי: הוסף קרדיט ב-OpenRouter כדי להשתמש במודלים בתשלום.",
+          "addCredits": "הוסף קרדיט"
+        },
+        "pickModel": "בחר מודל ענן למטה כדי להכתיב בענן."
+      },
+      "cloudModels": {
+        "title": "מודלים בענן · OpenRouter",
+        "refresh": "רענן את רשימת המודלים",
+        "keyRequired": "הוסף מפתח API כדי להשתמש בתמלול בענן.",
+        "addKey": "הוסף מפתח",
+        "showAll": "הצג את כל המודלים בענן ({{total}})",
+        "showFewer": "הצג פחות",
+        "fetchFailed": "לא ניתן לטעון את רשימת המודלים: {{error}}"
       }
     },
     "sound": {
